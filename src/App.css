@@ -2951,21 +2951,39 @@ body[data-theme="dark"] {
 }
 
 [data-theme="dark"] .td-us {
-  background: rgba(56, 230, 166, 0.06) !important;
+  background: rgba(56, 230, 166, 0.04) !important;
+  border-left: 1px solid rgba(56, 230, 166, 0.12) !important;
+  border-right: 1px solid rgba(56, 230, 166, 0.12) !important;
 }
 
 [data-theme="dark"] .th-us {
-  background: rgba(56, 230, 166, 0.12) !important;
+  background: rgba(56, 230, 166, 0.08) !important;
+  border-left: 1px solid rgba(56, 230, 166, 0.12) !important;
+  border-right: 1px solid rgba(56, 230, 166, 0.12) !important;
 }
 
 [data-theme="dark"] .th-us-badge {
-  color: #38E6A6 !important;
+  color: #4DFFBC !important;
+}
+
+[data-theme="dark"] .chip-success {
+  background: rgba(56, 230, 166, 0.14) !important;
+  color: #4DFFBC !important;
+  border: 1px solid rgba(77, 255, 188, 0.35) !important;
+  box-shadow: 0 0 12px rgba(77, 255, 188, 0.12);
+}
+
+[data-theme="dark"] .chip-danger {
+  background: rgba(255, 77, 77, 0.14) !important;
+  color: #FFA3A3 !important;
+  border: 1px solid rgba(255, 77, 77, 0.35) !important;
+  box-shadow: 0 0 12px rgba(255, 77, 77, 0.12);
 }
 
 [data-theme="dark"] .chip-warning {
-  background: #2D2214 !important;
-  color: #FBBF24 !important;
-  border-color: #63471A !important;
+  background: rgba(251, 191, 36, 0.14) !important;
+  color: #FCD34D !important;
+  border: 1px solid rgba(251, 191, 36, 0.35) !important;
 }
 
 [data-theme="dark"] .stats-strip {
