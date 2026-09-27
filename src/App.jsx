@@ -697,10 +697,9 @@ export default function App() {
       {/* ── 3D Modern Navbar ── */}
       <header className="header-3d-wrapper">
         <div className="header-3d">
-          <div className="logo-3d">
-            <div className="logo-icon-3d">
-              <span className="logo-emoji">✂️</span>
-              <div className="icon-3d-shine" />
+          <div className="logo-3d" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} style={{ cursor: "pointer" }}>
+            <div className="logo-img-wrap-3d">
+              <img src="/cuto_logo.png" alt="Cuto BG Remover Logo" className="logo-cuto-img" />
             </div>
             <div className="logo-text">
               <h1>Cuto<span>BG</span></h1>
