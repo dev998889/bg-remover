@@ -94,6 +94,7 @@ export default function App() {
   const compareRef = useRef(null);
   const isDraggingSlider = useRef(false);
   const progressTimerRef = useRef(null);
+  const dragCounterRef = useRef(0);
 
   // ── Touch-Up Studio (Manual Erase, Restore, Watermark Wipe) ──
   const [initialResultUrl, setInitialResultUrl] = useState(null);
@@ -398,14 +399,12 @@ export default function App() {
     } catch (_) {}
   }, []);
 
-  // ── Global Full-Screen Drag and Drop ──
+  // ── Global Full-Screen Drag and Drop (Anywhere on Viewport) ──
   useEffect(() => {
-    let dragCounter = 0;
-
     const handleWindowDragEnter = (e) => {
       e.preventDefault();
-      dragCounter++;
-      if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
+      if (e.dataTransfer.types && Array.from(e.dataTransfer.types).includes("Files")) {
+        dragCounterRef.current++;
         setDragging(true);
       }
     };
@@ -413,24 +412,27 @@ export default function App() {
     const handleWindowDragOver = (e) => {
       e.preventDefault();
       e.dataTransfer.dropEffect = "copy";
-      if (!dragging) setDragging(true);
     };
 
     const handleWindowDragLeave = (e) => {
       e.preventDefault();
-      dragCounter--;
-      if (dragCounter <= 0) {
+      dragCounterRef.current--;
+      if (dragCounterRef.current <= 0) {
+        dragCounterRef.current = 0;
         setDragging(false);
-        dragCounter = 0;
       }
     };
 
     const handleWindowDrop = (e) => {
       e.preventDefault();
-      dragCounter = 0;
+      e.stopPropagation();
+      dragCounterRef.current = 0;
       setDragging(false);
-      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-        loadFile(e.dataTransfer.files[0]);
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith("image/")) {
+          loadFile(file);
+        }
       }
     };
 
@@ -445,7 +447,7 @@ export default function App() {
       window.removeEventListener("dragleave", handleWindowDragLeave);
       window.removeEventListener("drop", handleWindowDrop);
     };
-  }, [loadFile, dragging]);
+  }, [loadFile]);
 
   const processImage = () => {
     if (original?.file) {
@@ -1924,6 +1926,49 @@ export default function App() {
             window.location.hash = tabId;
           }}
         />
+      )}
+
+      {/* ── Global Full-Screen Drag & Drop Overlay ── */}
+      {dragging && (
+        <div
+          className="global-drag-overlay"
+          onDragOver={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            e.dataTransfer.dropEffect = "copy";
+          }}
+          onDragLeave={(e) => {
+            e.preventDefault();
+            if (e.target === e.currentTarget) {
+              dragCounterRef.current = 0;
+              setDragging(false);
+            }
+          }}
+          onDrop={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            dragCounterRef.current = 0;
+            setDragging(false);
+            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+              const file = e.dataTransfer.files[0];
+              if (file && file.type.startsWith("image/")) {
+                loadFile(file);
+              }
+            }
+          }}
+        >
+          <div className="global-drag-modal">
+            <div className="drag-pulse-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+            </div>
+            <h2>Drop Your Image Anywhere!</h2>
+            <p>Release file anywhere on this screen to remove background instantly.</p>
+          </div>
+        </div>
       )}
     </div>
   );

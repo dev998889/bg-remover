@@ -622,6 +622,10 @@ body[data-theme="dark"] {
   pointer-events: none;
 }
 
+.global-drag-modal * {
+  pointer-events: none;
+}
+
 [data-theme="dark"] .global-drag-modal {
   background: #28081E;
   border: 3.5px dashed #9A0D1B;
