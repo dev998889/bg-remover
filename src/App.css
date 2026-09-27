@@ -824,14 +824,171 @@ body {
   font-weight: 600;
 }
 
-/* ── Footer ── */
-.footer {
-  text-align: center;
-  padding: 24px;
-  border-top: 1px solid var(--card-border);
-  background: var(--card-bg);
+/* ── Animated Multi-Color Wave Footer (remove.bg style) ── */
+.wave-footer {
+  position: relative;
+  width: 100%;
+  margin-top: 60px;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+/* SVG Wave Container */
+.wave-wrapper {
+  position: relative;
+  width: 100%;
+  height: 110px;
+  margin-bottom: -7px; /* Avoid gap between waves and footer background */
+  overflow: hidden;
+}
+
+.waves-svg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Parallax Moving Waves Animation */
+.parallax-waves > use {
+  animation: move-waves 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
+}
+
+.parallax-waves > use:nth-child(1) {
+  animation-delay: -2s;
+  animation-duration: 7s;
+}
+
+.parallax-waves > use:nth-child(2) {
+  animation-delay: -3s;
+  animation-duration: 10s;
+}
+
+.parallax-waves > use:nth-child(3) {
+  animation-delay: -4s;
+  animation-duration: 14s;
+}
+
+.parallax-waves > use:nth-child(4) {
+  animation-delay: -5s;
+  animation-duration: 20s;
+}
+
+@keyframes move-waves {
+  0% {
+    transform: translate3d(-90px, 0, 0);
+  }
+  100% {
+    transform: translate3d(85px, 0, 0);
+  }
+}
+
+/* Footer Content Area */
+.footer-content {
+  background-color: #1E293B; /* Deep modern slate matching base wave */
+  color: #94A3B8;
+  padding: 30px 48px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Top Row: Language pill & Social icons */
+.footer-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Language Pill Button (matches remove.bg) */
+.footer-lang-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #1E293B;
   font-size: 13px;
-  color: var(--text-muted);
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.footer-lang-pill:hover {
+  background: #FFFFFF;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* Circular Social Buttons (white circles like remove.bg) */
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.social-circle {
+  width: 40px;
+  height: 40px;
+  background-color: #FFFFFF;
+  color: #1E293B;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.social-circle:hover {
+  transform: translateY(-3px) scale(1.08);
+  background-color: #6366F1;
+  color: #FFFFFF;
+  box-shadow: 0 6px 16px rgba(99, 102, 241, 0.4);
+}
+
+/* Bottom Row: Copyright & Legal Links */
+.footer-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 12px;
+}
+
+.footer-copyright {
+  color: #CBD5E1;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: #94A3B8;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: #FFFFFF;
+  text-decoration: underline;
 }
 
 /* ── Responsive ── */
@@ -842,4 +999,9 @@ body {
   .hero h2 { font-size: 28px; }
   .upload-zone { padding: 40px 16px; }
   .compare-slider, .single-view { height: 380px; }
+  .wave-wrapper { height: 70px; }
+  .footer-content { padding: 24px 20px 32px; }
+  .footer-top-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .footer-bottom-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .footer-links { gap: 14px; }
 }
