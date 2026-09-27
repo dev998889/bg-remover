@@ -113,6 +113,12 @@ export default function App() {
     localStorage.setItem("bgeraser_theme", nextTheme);
   };
 
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    document.body.setAttribute("data-theme", theme);
+    document.documentElement.style.colorScheme = theme;
+  }, [theme]);
+
   const presetColors = theme === "dark" ? PRESET_BG_COLORS_DARK : PRESET_BG_COLORS_LIGHT;
 
   const touchUpCanvasRef = useRef(null);
