@@ -4,15 +4,14 @@ import "./App.css";
 
 const PRESET_BG_COLORS = [
   { name: "Transparent", value: "transparent", isCheckered: true },
-  { name: "White", value: "#FFFFFF" },
-  { name: "Off-White", value: "#F8FAFC" },
-  { name: "Black", value: "#0F172A" },
-  { name: "Soft Gray", value: "#E2E8F0" },
-  { name: "Modern Blue", value: "#3B82F6" },
-  { name: "Vibrant Indigo", value: "#6366F1" },
-  { name: "Emerald Green", value: "#10B981" },
-  { name: "Warm Amber", value: "#F59E0B" },
-  { name: "Rose Pink", value: "#F43F5E" },
+  { name: "Harvest Gold", value: "#E1A36F" },
+  { name: "Calico", value: "#DEC484" },
+  { name: "Hampton Linen", value: "#E2D8A5" },
+  { name: "Sea Nymph Teal", value: "#6F9F9C" },
+  { name: "Smalt Blue", value: "#577E89" },
+  { name: "Soft White", value: "#FAF8F5" },
+  { name: "Pure White", value: "#FFFFFF" },
+  { name: "Deep Charcoal", value: "#2C3E44" },
 ];
 
 export default function App() {
@@ -502,43 +501,33 @@ export default function App() {
                 id="gentle-wave"
                 d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
               />
-              {/* Wave 1: Glowing Neon Aqua / Electric Cyan (Top-most) */}
+              {/* Wave 1: Harvest Gold (#E1A36F) to Calico (#DEC484) - Topmost Warm Wave */}
               <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#00F5D4" stopOpacity="0.9" />
-                <stop offset="50%" stopColor="#00BBF9" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#38BDF8" stopOpacity="0.9" />
+                <stop offset="0%" stopColor="#E1A36F" />
+                <stop offset="100%" stopColor="#DEC484" />
               </linearGradient>
 
-              {/* Wave 2: Hot Coral Sunset / Neon Magenta */}
+              {/* Wave 2: Calico (#DEC484) to Hampton Linen (#E2D8A5) */}
               <linearGradient id="wave2" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#FF3366" stopOpacity="0.85" />
-                <stop offset="50%" stopColor="#FF007A" stopOpacity="0.85" />
-                <stop offset="100%" stopColor="#D946EF" stopOpacity="0.85" />
+                <stop offset="0%" stopColor="#DEC484" />
+                <stop offset="100%" stopColor="#E2D8A5" />
               </linearGradient>
 
-              {/* Wave 3: Electric Violet & Royal Purple */}
+              {/* Wave 3: Sea Nymph Teal (#6F9F9C) to Smalt Blue (#577E89) */}
               <linearGradient id="wave3" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.85" />
-                <stop offset="50%" stopColor="#7C3AED" stopOpacity="0.85" />
-                <stop offset="100%" stopColor="#6366F1" stopOpacity="0.85" />
-              </linearGradient>
-
-              {/* Wave 4: Deep Royal Indigo crest transitioning into Slate base (never dark at the top!) */}
-              <linearGradient id="wave4" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#4F46E5" />
-                <stop offset="40%" stopColor="#312E81" />
-                <stop offset="100%" stopColor="#1E293B" />
+                <stop offset="0%" stopColor="#6F9F9C" />
+                <stop offset="100%" stopColor="#577E89" />
               </linearGradient>
             </defs>
             <g className="parallax-waves">
-              {/* Wave 1: Neon Cyan */}
+              {/* Wave 1: Harvest Gold */}
               <use xlinkHref="#gentle-wave" x="48" y="0" fill="url(#wave1)" />
-              {/* Wave 2: Hot Magenta / Coral */}
+              {/* Wave 2: Calico Sand */}
               <use xlinkHref="#gentle-wave" x="48" y="2" fill="url(#wave2)" />
-              {/* Wave 3: Electric Violet */}
+              {/* Wave 3: Sea Nymph Teal */}
               <use xlinkHref="#gentle-wave" x="48" y="4" fill="url(#wave3)" />
-              {/* Wave 4: Royal Indigo to Slate Base */}
-              <use xlinkHref="#gentle-wave" x="48" y="7" fill="url(#wave4)" />
+              {/* Wave 4: Smalt Blue Base connecting to footer background */}
+              <use xlinkHref="#gentle-wave" x="48" y="7" fill="#577E89" />
             </g>
           </svg>
         </div>
