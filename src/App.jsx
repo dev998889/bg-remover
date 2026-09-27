@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { removeBackground, preload } from "@imgly/background-removal";
+import LegalModal from "./LegalPages";
 import "./App.css";
 
 // ── Light & Dark Theme Color Presets (Moody Botanical Palette from user design) ──
@@ -106,6 +107,33 @@ export default function App() {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem("bgeraser_theme") || "dark";
   });
+
+  // ── AdSense Legal Pages State (#terms, #general, #privacy, #cookies, #imprint) ──
+  const [activeLegalModal, setActiveLegalModal] = useState(null);
+
+  useEffect(() => {
+    const syncLegalHash = () => {
+      const hash = window.location.hash.replace("#", "").toLowerCase();
+      if (["terms", "general", "privacy", "cookies", "imprint"].includes(hash)) {
+        setActiveLegalModal(hash);
+      }
+    };
+    syncLegalHash();
+    window.addEventListener("hashchange", syncLegalHash);
+    return () => window.removeEventListener("hashchange", syncLegalHash);
+  }, []);
+
+  const openLegalDoc = (docId) => {
+    setActiveLegalModal(docId);
+    window.location.hash = docId;
+  };
+
+  const closeLegalDoc = () => {
+    setActiveLegalModal(null);
+    if (window.location.hash) {
+      history.pushState("", document.title, window.location.pathname + window.location.search);
+    }
+  };
 
   const toggleTheme = () => {
     const nextTheme = theme === "dark" ? "light" : "dark";
@@ -1741,15 +1769,27 @@ export default function App() {
               <span>© BG Eraser, a free 100% in-browser AI tool</span>
             </div>
             <div className="footer-links">
-              <a href="#">Terms of Service</a>
-              <a href="#">General Terms and Conditions</a>
-              <a href="#">Privacy Policy</a>
-              <a href="#">Cookie Policy</a>
-              <a href="#">Imprint</a>
+              <a href="#terms" onClick={(e) => { e.preventDefault(); openLegalDoc("terms"); }}>Terms of Service</a>
+              <a href="#general" onClick={(e) => { e.preventDefault(); openLegalDoc("general"); }}>General Terms and Conditions</a>
+              <a href="#privacy" onClick={(e) => { e.preventDefault(); openLegalDoc("privacy"); }}>Privacy Policy</a>
+              <a href="#cookies" onClick={(e) => { e.preventDefault(); openLegalDoc("cookies"); }}>Cookie Policy</a>
+              <a href="#imprint" onClick={(e) => { e.preventDefault(); openLegalDoc("imprint"); }}>Imprint</a>
             </div>
           </div>
         </div>
       </footer>
+
+      {/* ── Google AdSense & Legal Transparency Reader Modal ── */}
+      {activeLegalModal && (
+        <LegalModal
+          activeTab={activeLegalModal}
+          onClose={closeLegalDoc}
+          onSelectTab={(tabId) => {
+            setActiveLegalModal(tabId);
+            window.location.hash = tabId;
+          }}
+        />
+      )}
     </div>
   );
 }
