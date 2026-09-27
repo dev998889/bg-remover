@@ -868,129 +868,131 @@ export default function App() {
     <div className="app" data-theme={theme}>
       {/* ── 3D Modern Navbar ── */}
       <header className="header-3d-wrapper">
-        <div className="header-3d">
-          <div className="logo-3d" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} style={{ cursor: "pointer" }}>
-            <div className="logo-img-wrap-3d">
-              <img
-                src={theme === "dark" ? "/cuto_logo_dark.png" : "/cuto_logo.png"}
-                alt="Cuto BG Remover Logo"
-                className="logo-cuto-img"
-              />
+        <div className="header-3d-bar">
+          <div className="header-3d">
+            <div className="logo-3d" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} style={{ cursor: "pointer" }}>
+              <div className="logo-img-wrap-3d">
+                <img
+                  src={theme === "dark" ? "/cuto_logo_dark.png" : "/cuto_logo.png"}
+                  alt="Cuto BG Remover Logo"
+                  className="logo-cuto-img"
+                />
+              </div>
+              <div className="logo-text">
+                <h1>Cuto<span>BG</span></h1>
+                <p>AI Background Remover</p>
+              </div>
             </div>
-            <div className="logo-text">
-              <h1>Cuto<span>BG</span></h1>
-              <p>AI Background Remover</p>
-            </div>
-          </div>
 
-          {/* Main Navigation Links */}
-          <nav className="header-nav-links desktop-only">
-            <a
-              href="#examples"
-              onClick={(e) => {
-                e.preventDefault();
-                const el = document.getElementById("examples");
-                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-              }}
-            >
-              Showcase
-            </a>
-            <a
-              href="#features"
-              onClick={(e) => {
-                e.preventDefault();
-                const el = document.getElementById("features");
-                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-              }}
-            >
-              Features
-            </a>
-            <a
-              href="#why-free"
-              onClick={(e) => {
-                e.preventDefault();
-                const el = document.getElementById("why-free");
-                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-              }}
-            >
-              Why Free?
-            </a>
-            <a
-              href="#faq"
-              onClick={(e) => {
-                e.preventDefault();
-                const el = document.getElementById("faq");
-                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-              }}
-            >
-              FAQ
-            </a>
-          </nav>
+            {/* Main Navigation Links */}
+            <nav className="header-nav-links desktop-only">
+              <a
+                href="#examples"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const el = document.getElementById("examples");
+                  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+              >
+                Showcase
+              </a>
+              <a
+                href="#features"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const el = document.getElementById("features");
+                  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+              >
+                Features
+              </a>
+              <a
+                href="#why-free"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const el = document.getElementById("why-free");
+                  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+              >
+                Why Free?
+              </a>
+              <a
+                href="#faq"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const el = document.getElementById("faq");
+                  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+              >
+                FAQ
+              </a>
+            </nav>
 
-          <div className="nav-badges-group">
-            {/* 3D Tactile Theme Switcher Button */}
-            <button
-              className="btn-theme-toggle-3d"
-              onClick={toggleTheme}
-              title={`Switch to ${theme === "dark" ? "Light" : "Dark"} theme`}
-              aria-label="Toggle dark/light theme"
-            >
-              <span className="theme-toggle-icon">{theme === "dark" ? "☀️" : "🌙"}</span>
-              <span className="theme-toggle-text">{theme === "dark" ? "Light" : "Dark"}</span>
-            </button>
+            <div className="nav-badges-group">
+              {/* 3D Tactile Theme Switcher Button */}
+              <button
+                className="btn-theme-toggle-3d"
+                onClick={toggleTheme}
+                title={`Switch to ${theme === "dark" ? "Light" : "Dark"} theme`}
+                aria-label="Toggle dark/light theme"
+              >
+                <span className="theme-toggle-icon">{theme === "dark" ? "☀️" : "🌙"}</span>
+                <span className="theme-toggle-text">{theme === "dark" ? "Light" : "Dark"}</span>
+              </button>
 
-            <div className="nav-pill-badge badge-free">
-              <span className="badge-dot" />
-              <span>100% Free</span>
+              <div className="nav-pill-badge badge-free">
+                <span className="badge-dot" />
+                <span>100% Free</span>
+              </div>
+              <div className="nav-pill-badge badge-privacy desktop-only">
+                <span className="pill-icon">🛡️</span>
+                <span>100% Private</span>
+              </div>
+              <div className="nav-pill-badge badge-engine desktop-only" title="High-Speed Local Web Worker Engine">
+                <span className="pill-icon">⚡</span>
+                <span>Local AI</span>
+              </div>
+              <a
+                href="https://github.com/dev998889/bg-remover"
+                target="_blank"
+                rel="noreferrer"
+                className="btn-github-3d"
+                title="Star on GitHub"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                  <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                </svg>
+                <span className="btn-github-text">GitHub</span>
+              </a>
             </div>
-            <div className="nav-pill-badge badge-privacy desktop-only">
-              <span className="pill-icon">🛡️</span>
-              <span>100% Private</span>
-            </div>
-            <div className="nav-pill-badge badge-engine desktop-only" title="High-Speed Local Web Worker Engine">
-              <span className="pill-icon">⚡</span>
-              <span>Local AI</span>
-            </div>
-            <a
-              href="https://github.com/dev998889/bg-remover"
-              target="_blank"
-              rel="noreferrer"
-              className="btn-github-3d"
-              title="Star on GitHub"
-            >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-              </svg>
-              <span className="btn-github-text">GitHub</span>
-            </a>
           </div>
         </div>
 
-        {/* ── Subtle Compact Animated Waves under Navbar (Low Height) ── */}
+        {/* ── Subtle Compact Animated Waves under Navbar (Uper Se Neeche Flow) ── */}
         <div className="nav-wave-wrapper">
           <svg
             className="nav-waves-svg"
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
-            viewBox="0 24 150 28"
+            viewBox="0 0 150 48"
             preserveAspectRatio="none"
             shapeRendering="auto"
           >
             <defs>
               <path
-                id="nav-gentle-wave"
-                d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
+                id="nav-gentle-wave-sky"
+                d="M-160 0 L-160 20 c30 0 58 18 88 18 s58 -18 88 -18 58 18 88 18 58 -18 88 -18 L192 0 Z"
               />
             </defs>
             <g className="parallax-waves">
-              {/* Wave 1: Primary Brand Yellow (#FFD600) */}
-              <use xlinkHref="#nav-gentle-wave" x="48" y="0" fill={theme === "dark" ? "#9A0D1B" : "#FFD600"} />
+              {/* Wave 1: Primary Brand Yellow (#FFD600) - hangs lowest down */}
+              <use xlinkHref="#nav-gentle-wave-sky" x="48" y="6" fill={theme === "dark" ? "#9A0D1B" : "#FFD600"} />
               {/* Wave 2: Sunset Orange (#FF6F00) */}
-              <use xlinkHref="#nav-gentle-wave" x="48" y="2" fill={theme === "dark" ? "#6A040F" : "#FF6F00"} />
+              <use xlinkHref="#nav-gentle-wave-sky" x="48" y="4" fill={theme === "dark" ? "#6A040F" : "#FF6F00"} />
               {/* Wave 3: Amber Gold (#FFAB00) */}
-              <use xlinkHref="#nav-gentle-wave" x="48" y="4" fill={theme === "dark" ? "#550816" : "#FFAB00"} />
-              {/* Wave 4: Deep Carbon Black (#14171A) seamlessly merging with Black Navbar */}
-              <use xlinkHref="#nav-gentle-wave" x="48" y="7" fill={theme === "dark" ? "#1D0515" : "#14171A"} />
+              <use xlinkHref="#nav-gentle-wave-sky" x="48" y="2" fill={theme === "dark" ? "#550816" : "#FFAB00"} />
+              {/* Wave 4: Deep Carbon Black (#14171A) - top layer flush with Black Navbar */}
+              <use xlinkHref="#nav-gentle-wave-sky" x="48" y="0" fill={theme === "dark" ? "#1D0515" : "#14171A"} />
             </g>
           </svg>
         </div>
