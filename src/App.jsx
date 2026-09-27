@@ -82,6 +82,22 @@ export default function App() {
   const isDraggingSlider = useRef(false);
   const progressTimerRef = useRef(null);
 
+  // ── Touch-Up Studio (Manual Erase, Restore, Watermark Wipe) ──
+  const [initialResultUrl, setInitialResultUrl] = useState(null);
+  const [brushMode, setBrushMode] = useState("erase"); // "erase" | "restore"
+  const [brushSize, setBrushSize] = useState(24);
+  const [canUndo, setCanUndo] = useState(false);
+  const [canRedo, setCanRedo] = useState(false);
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0, displaySize: 24, visible: false });
+  const [copyFeedback, setCopyFeedback] = useState("");
+
+  const touchUpCanvasRef = useRef(null);
+  const originalImgRef = useRef(null);
+  const isPaintingRef = useRef(false);
+  const lastPointRef = useRef(null);
+  const undoStackRef = useRef([]);
+  const redoStackRef = useRef([]);
+
   // ── Running Example Showcase State ──
   const [activeShowcaseId, setActiveShowcaseId] = useState("ecommerce");
   const [showcaseSliderPos, setShowcaseSliderPos] = useState(50);
@@ -196,6 +212,11 @@ export default function App() {
       const url = URL.createObjectURL(blob);
       setResultBlob(blob);
       setResult(url);
+      setInitialResultUrl(url);
+      undoStackRef.current = [];
+      redoStackRef.current = [];
+      setCanUndo(false);
+      setCanRedo(false);
       setProgress(100);
       setProgressMsg("Complete!");
       setStatus("done");
@@ -312,15 +333,305 @@ export default function App() {
     } catch (_) {}
   };
 
+  // ── Sync Touch-Up Canvas to State & Blob ──
+  const syncCanvasToResult = useCallback(() => {
+    const canvas = touchUpCanvasRef.current;
+    if (!canvas) return;
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const newUrl = URL.createObjectURL(blob);
+      setResult(newUrl);
+      setResultBlob(blob);
+    }, "image/png");
+  }, []);
+
+  // ── Initialize Touch-Up Canvas with current Cutout ──
+  const initTouchUpCanvas = useCallback(() => {
+    if (!result || !touchUpCanvasRef.current) return;
+    const canvas = touchUpCanvasRef.current;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      canvas.width = img.naturalWidth || img.width;
+      canvas.height = img.naturalHeight || img.height;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.globalCompositeOperation = "source-over";
+      ctx.drawImage(img, 0, 0);
+
+      // Preload original image for restore mode
+      if (original?.url) {
+        const origImg = new Image();
+        origImg.crossOrigin = "anonymous";
+        origImg.onload = () => {
+          originalImgRef.current = origImg;
+        };
+        origImg.src = original.url;
+      }
+    };
+    img.src = result;
+  }, [result, original]);
+
+  useEffect(() => {
+    if (view === "touchup") {
+      const t = setTimeout(() => initTouchUpCanvas(), 60);
+      return () => clearTimeout(t);
+    }
+  }, [view, initTouchUpCanvas]);
+
+  const getCanvasCoords = (e) => {
+    const canvas = touchUpCanvasRef.current;
+    if (!canvas) return { x: 0, y: 0 };
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    return {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY,
+    };
+  };
+
+  const updateCursor = (e) => {
+    const canvas = touchUpCanvasRef.current;
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    const scale = rect.width / canvas.width;
+    const displaySize = Math.max(6, brushSize * scale);
+    setCursorPos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+      displaySize,
+      visible: true,
+    });
+  };
+
+  const paintPoint = (x, y) => {
+    const canvas = touchUpCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const radius = brushSize / 2;
+
+    if (brushMode === "restore" && originalImgRef.current) {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.clip();
+      ctx.drawImage(originalImgRef.current, 0, 0, canvas.width, canvas.height);
+      ctx.restore();
+    } else {
+      ctx.save();
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  };
+
+  const paintLine = (p1, p2) => {
+    const canvas = touchUpCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const radius = brushSize / 2;
+
+    if (brushMode === "restore" && originalImgRef.current) {
+      const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+      const steps = Math.max(1, Math.ceil(dist / (radius * 0.5)));
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        const curX = p1.x + (p2.x - p1.x) * t;
+        const curY = p1.y + (p2.y - p1.y) * t;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(curX, curY, radius, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.drawImage(originalImgRef.current, 0, 0, canvas.width, canvas.height);
+        ctx.restore();
+      }
+    } else {
+      ctx.save();
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.lineWidth = brushSize;
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(p2.x, p2.y, radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  };
+
+  const startPainting = (e) => {
+    const canvas = touchUpCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+    // Push snapshot to undo stack
+    const currentData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    if (undoStackRef.current.length >= 15) undoStackRef.current.shift();
+    undoStackRef.current.push(currentData);
+    redoStackRef.current = [];
+    setCanUndo(true);
+    setCanRedo(false);
+
+    isPaintingRef.current = true;
+    const coords = getCanvasCoords(e);
+    lastPointRef.current = coords;
+    paintPoint(coords.x, coords.y);
+  };
+
+  const drawPaint = (e) => {
+    updateCursor(e);
+    if (!isPaintingRef.current) return;
+    const coords = getCanvasCoords(e);
+    if (lastPointRef.current) {
+      paintLine(lastPointRef.current, coords);
+    } else {
+      paintPoint(coords.x, coords.y);
+    }
+    lastPointRef.current = coords;
+  };
+
+  const stopPainting = () => {
+    if (!isPaintingRef.current) return;
+    isPaintingRef.current = false;
+    lastPointRef.current = null;
+    syncCanvasToResult();
+  };
+
+  const wipeBottomWatermark = () => {
+    const canvas = touchUpCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const currentData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    if (undoStackRef.current.length >= 15) undoStackRef.current.shift();
+    undoStackRef.current.push(currentData);
+    redoStackRef.current = [];
+    setCanUndo(true);
+    setCanRedo(false);
+
+    // Clear bottom 7.5%
+    const bottomH = Math.max(18, Math.round(canvas.height * 0.075));
+    const startY = canvas.height - bottomH;
+    ctx.save();
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.fillRect(0, startY, canvas.width, bottomH);
+    ctx.restore();
+
+    syncCanvasToResult();
+  };
+
+  const trimEdges = () => {
+    const canvas = touchUpCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const currentData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    if (undoStackRef.current.length >= 15) undoStackRef.current.shift();
+    undoStackRef.current.push(currentData);
+    redoStackRef.current = [];
+    setCanUndo(true);
+    setCanRedo(false);
+
+    const t = Math.max(3, Math.round(Math.min(canvas.width, canvas.height) * 0.012));
+    ctx.save();
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.fillRect(0, 0, canvas.width, t);
+    ctx.fillRect(0, canvas.height - t, canvas.width, t);
+    ctx.fillRect(0, 0, t, canvas.height);
+    ctx.fillRect(canvas.width - t, 0, t, canvas.height);
+    ctx.restore();
+
+    syncCanvasToResult();
+  };
+
+  const resetCutout = () => {
+    if (!initialResultUrl || !touchUpCanvasRef.current) return;
+    const canvas = touchUpCanvasRef.current;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const currentData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    if (undoStackRef.current.length >= 15) undoStackRef.current.shift();
+    undoStackRef.current.push(currentData);
+    redoStackRef.current = [];
+    setCanUndo(true);
+    setCanRedo(false);
+
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.globalCompositeOperation = "source-over";
+      ctx.drawImage(img, 0, 0);
+      syncCanvasToResult();
+    };
+    img.src = initialResultUrl;
+  };
+
+  const handleUndo = () => {
+    const canvas = touchUpCanvasRef.current;
+    if (!canvas || undoStackRef.current.length === 0) return;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const currentData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    redoStackRef.current.push(currentData);
+    const prevData = undoStackRef.current.pop();
+    ctx.putImageData(prevData, 0, 0);
+    setCanUndo(undoStackRef.current.length > 0);
+    setCanRedo(true);
+    syncCanvasToResult();
+  };
+
+  const handleRedo = () => {
+    const canvas = touchUpCanvasRef.current;
+    if (!canvas || redoStackRef.current.length === 0) return;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    const currentData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    undoStackRef.current.push(currentData);
+    const nextData = redoStackRef.current.pop();
+    ctx.putImageData(nextData, 0, 0);
+    setCanUndo(true);
+    setCanRedo(redoStackRef.current.length > 0);
+    syncCanvasToResult();
+  };
+
+  const copyToClipboard = async () => {
+    if (!result) return;
+    try {
+      let blob = resultBlob;
+      if (!blob) {
+        const resp = await fetch(result);
+        blob = await resp.blob();
+      }
+      await navigator.clipboard.write([
+        new ClipboardItem({ "image/png": blob })
+      ]);
+      setCopyFeedback("Copied PNG! ✓");
+      setTimeout(() => setCopyFeedback(""), 2500);
+    } catch (err) {
+      console.warn("Clipboard copy error:", err);
+      setCopyFeedback("Copy not supported");
+      setTimeout(() => setCopyFeedback(""), 2500);
+    }
+  };
+
   const resetAll = () => {
     if (original?.url) URL.revokeObjectURL(original.url);
     if (result) URL.revokeObjectURL(result);
+    if (initialResultUrl && initialResultUrl !== result) URL.revokeObjectURL(initialResultUrl);
     setOriginal(null);
     setResult(null);
     setResultBlob(null);
+    setInitialResultUrl(null);
+    undoStackRef.current = [];
+    redoStackRef.current = [];
+    setCanUndo(false);
+    setCanRedo(false);
     setStatus("idle");
     setProgress(0);
     setSliderPos(50);
+    setView("split");
   };
 
   return (
@@ -365,8 +676,8 @@ export default function App() {
       </header>
 
       <main className="main">
-        {/* ── Upload State ── */}
-        {!original && (
+        {/* ── Top Workspace or Upload State ── */}
+        {!original ? (
           <>
             <div className="hero">
               <div className="hero-pill-badge">
@@ -425,6 +736,368 @@ export default function App() {
                 <span className="trust-check">✓</span> 100% Private (Runs locally)
               </span>
             </div>
+          </>
+        ) : (
+          <div className="workspace">
+            {/* Toolbar */}
+            <div className="toolbar">
+              <div className="file-info">
+                <div className="file-dot" />
+                <span className="file-name">{original.name}</span>
+              </div>
+              <div className="toolbar-right">
+                {result && (
+                  <div className="view-toggle">
+                    {[
+                      { id: "split", label: "Split Comparison" },
+                      { id: "result", label: "Cutout Only" },
+                      { id: "touchup", label: "🧹 Manual Touch-Up & Erase" },
+                      { id: "original", label: "Original" },
+                    ].map((v) => (
+                      <button
+                        key={v.id}
+                        className={`toggle-btn ${view === v.id ? "active" : ""}`}
+                        onClick={() => {
+                          setView(v.id);
+                          if (v.id === "touchup") {
+                            setTimeout(() => initTouchUpCanvas(), 60);
+                          }
+                        }}
+                      >
+                        {v.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                <button className="btn-reset" onClick={resetAll}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                  New Image
+                </button>
+              </div>
+            </div>
+
+            {/* Canvas Area */}
+            <div className="canvas-card">
+              {/* ── 1. Split View Mode ── */}
+              {result && view === "split" && (
+                <div
+                  className="compare-slider"
+                  ref={compareRef}
+                  onPointerDown={onPointerDown}
+                  onPointerMove={onPointerMove}
+                  onPointerUp={onPointerUp}
+                  onPointerCancel={onPointerUp}
+                >
+                  <div
+                    className={`slider-backdrop ${bgColor === "transparent" ? "checkerboard" : ""}`}
+                    style={bgColor !== "transparent" ? { backgroundColor: bgColor } : {}}
+                  />
+                  <div className="slider-layer result-layer">
+                    <img src={result} alt="Processed Result" draggable={false} />
+                  </div>
+                  <div
+                    className="slider-layer original-layer"
+                    style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
+                  >
+                    <img src={original.url} alt="Original Image" draggable={false} />
+                  </div>
+                  <div className="divider-line" style={{ left: `${sliderPos}%` }}>
+                    <div className="divider-handle">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <polyline points="15 18 9 12 15 6" />
+                        <polyline points="9 18 3 12 9 6" />
+                      </svg>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transform: "rotate(180deg)" }}>
+                        <polyline points="15 18 9 12 15 6" />
+                        <polyline points="9 18 3 12 9 6" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="canvas-badge badge-left">Original</div>
+                  <div className="canvas-badge badge-right">
+                    {bgColor === "transparent" ? "Transparent BG" : "Custom BG"}
+                  </div>
+                </div>
+              )}
+
+              {/* ── 2. Result Only Mode ── */}
+              {result && view === "result" && (
+                <div
+                  className={`single-view ${bgColor === "transparent" ? "checkerboard" : ""}`}
+                  style={bgColor !== "transparent" ? { backgroundColor: bgColor } : {}}
+                >
+                  <img src={result} alt="Background Removed" draggable={false} />
+                  <div className="canvas-badge badge-right">
+                    {bgColor === "transparent" ? "Transparent PNG" : "Custom Color"}
+                  </div>
+                </div>
+              )}
+
+              {/* ── 3. Manual Touch-Up Studio (Erase & Restore Canvas) ── */}
+              {result && view === "touchup" && (
+                <div
+                  className={`touchup-container ${bgColor === "transparent" ? "checkerboard" : ""}`}
+                  style={bgColor !== "transparent" ? { backgroundColor: bgColor } : {}}
+                >
+                  {/* Floating Action Strip */}
+                  <div className="touchup-tools-strip">
+                    <div className="tool-group">
+                      <span className="tool-group-label">Brush:</span>
+                      <button
+                        className={`btn-brush-mode ${brushMode === "erase" ? "active-erase" : ""}`}
+                        onClick={() => setBrushMode("erase")}
+                        title="Erase background residue, watermarks, or leftover text"
+                      >
+                        🧹 Erase
+                      </button>
+                      <button
+                        className={`btn-brush-mode ${brushMode === "restore" ? "active-restore" : ""}`}
+                        onClick={() => setBrushMode("restore")}
+                        title="Restore original image details accidentally erased"
+                      >
+                        🖌️ Restore
+                      </button>
+                    </div>
+
+                    <div className="tool-group brush-size-group">
+                      <span className="tool-group-label">Size: {brushSize}px</span>
+                      <input
+                        type="range"
+                        min="6"
+                        max="80"
+                        value={brushSize}
+                        onChange={(e) => setBrushSize(Number(e.target.value))}
+                        className="brush-slider"
+                      />
+                      <div
+                        className="brush-dot-preview"
+                        style={{
+                          width: `${Math.min(24, Math.max(6, brushSize * 0.35))}px`,
+                          height: `${Math.min(24, Math.max(6, brushSize * 0.35))}px`,
+                          backgroundColor: brushMode === "restore" ? "var(--c-mint)" : "var(--c-coral)",
+                        }}
+                      />
+                    </div>
+
+                    <div className="tool-group actions-group">
+                      <button
+                        className="btn-tool-action"
+                        onClick={wipeBottomWatermark}
+                        title="Instantly clear bottom watermark (e.g. Shutterstock, stock text)"
+                      >
+                        ✂️ Wipe Watermark
+                      </button>
+                      <button
+                        className="btn-tool-action"
+                        onClick={trimEdges}
+                        title="Clean thin border or corner artifacts"
+                      >
+                        📐 Clean Edges
+                      </button>
+                    </div>
+
+                    <div className="tool-group history-group">
+                      <button
+                        className="btn-history"
+                        onClick={handleUndo}
+                        disabled={!canUndo}
+                        title="Undo stroke"
+                      >
+                        ↩️ Undo
+                      </button>
+                      <button
+                        className="btn-history"
+                        onClick={handleRedo}
+                        disabled={!canRedo}
+                        title="Redo stroke"
+                      >
+                        ↪️ Redo
+                      </button>
+                      <button
+                        className="btn-history btn-reset-cutout"
+                        onClick={resetCutout}
+                        title="Revert back to initial AI cutout"
+                      >
+                        🔄 Reset
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Interactive Drawing Canvas */}
+                  <div
+                    className="touchup-canvas-wrapper"
+                    onPointerDown={startPainting}
+                    onPointerMove={drawPaint}
+                    onPointerUp={stopPainting}
+                    onPointerCancel={stopPainting}
+                    onPointerLeave={() => {
+                      stopPainting();
+                      setCursorPos((prev) => ({ ...prev, visible: false }));
+                    }}
+                    onPointerEnter={() => setCursorPos((prev) => ({ ...prev, visible: true }))}
+                  >
+                    <canvas ref={touchUpCanvasRef} className="touchup-canvas" />
+
+                    {/* Cursor ring indicator */}
+                    {cursorPos.visible && (
+                      <div
+                        className={`brush-cursor ${brushMode === "restore" ? "cursor-restore" : "cursor-erase"}`}
+                        style={{
+                          left: `${cursorPos.x}px`,
+                          top: `${cursorPos.y}px`,
+                          width: `${cursorPos.displaySize}px`,
+                          height: `${cursorPos.displaySize}px`,
+                        }}
+                      />
+                    )}
+
+                    <div className="canvas-badge badge-right">
+                      {brushMode === "erase" ? "🧹 Erase Mode" : "🖌️ Restore Mode"} · Click & Drag on image
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* ── 4. Original Only Mode ── */}
+              {(!result || view === "original") && (
+                <div className="single-view original-view">
+                  <img src={original.url} alt="Original Image" draggable={false} />
+                  {status === "loading" && (
+                    <div className="laser-scanner-overlay">
+                      <div className="laser-scan-line" />
+                    </div>
+                  )}
+                  <div className="canvas-badge badge-left">
+                    {status === "loading" ? "AI Scanning..." : "Original"}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Background Color Palette */}
+            {result && (
+              <div className="color-palette-bar">
+                <span className="palette-label">Backdrop:</span>
+                <div className="palette-options">
+                  {PRESET_BG_COLORS.map((c) => (
+                    <button
+                      key={c.name}
+                      title={c.name}
+                      className={`color-btn ${bgColor === c.value ? "active" : ""} ${c.isCheckered ? "checker-btn" : ""}`}
+                      style={!c.isCheckered ? { backgroundColor: c.value } : {}}
+                      onClick={() => setBgColor(c.value)}
+                    >
+                      {bgColor === c.value && (
+                        <span className="check-icon">✓</span>
+                      )}
+                    </button>
+                  ))}
+
+                  <label className="color-picker-label" title="Custom Color">
+                    <input
+                      type="color"
+                      value={customColor}
+                      onChange={(e) => {
+                        setCustomColor(e.target.value);
+                        setBgColor(e.target.value);
+                      }}
+                    />
+                    <span className="color-picker-text">🎨</span>
+                  </label>
+                </div>
+              </div>
+            )}
+
+            {/* Action Bar */}
+            <div className="action-bar">
+              {status === "idle" && (
+                <button className="btn-primary" onClick={processImage}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <path d="m9 11-6 6v3h3l6-6"/>
+                    <path d="m22 2-3 3"/>
+                    <path d="m2 22 3-3"/>
+                    <path d="M22 16l-3-3-7-7 3-3 7 7 3 3z"/>
+                  </svg>
+                  Remove Background Now
+                </button>
+              )}
+
+              {status === "loading" && (
+                <div className="loading-card-3d">
+                  <div className="loading-card-top">
+                    <div className="loading-status-badge">
+                      <span className="pulsing-radar-dot" />
+                      <span>In-Browser AI Neural Engine</span>
+                    </div>
+                    <span className="loading-tech-tag">WASM SIMD</span>
+                  </div>
+
+                  <div className="loading-card-mid">
+                    <div className="loading-scanner-orb">
+                      <span className="orb-icon">✂️</span>
+                    </div>
+                    <div className="loading-text-stack">
+                      <h4>{progressMsg}</h4>
+                      <p>Isolating subject edges locally on your device · 100% Private</p>
+                    </div>
+                    <div className="loading-pct-counter">{progress}%</div>
+                  </div>
+
+                  <div className="loading-bar-shell">
+                    <div
+                      className="loading-bar-fill"
+                      style={{ width: `${progress}%` }}
+                    >
+                      <div className="loading-bar-light" />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {status === "error" && (
+                <div className="error-box">
+                  <p>{progressMsg}</p>
+                  <button className="btn-primary" onClick={processImage}>
+                    Try Again
+                  </button>
+                </div>
+              )}
+
+              {status === "done" && (
+                <div className="result-actions">
+                  <button className="btn-secondary" onClick={processImage}>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                    </svg>
+                    Re-process
+                  </button>
+                  <button
+                    className="btn-copy-clipboard"
+                    onClick={copyToClipboard}
+                    title="Directly copy transparent PNG to clipboard"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                    </svg>
+                    {copyFeedback ? copyFeedback : "Copy PNG"}
+                  </button>
+                  <button className="btn-download" onClick={downloadImage}>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                      <polyline points="7 10 12 15 17 10"/>
+                      <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Download {bgColor === "transparent" ? "Transparent PNG" : "Image"}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
             {/* ── Running Example Section ("What is Background Remover used for?") ── */}
             <section className="showcase-section">
@@ -927,247 +1600,6 @@ export default function App() {
                 </button>
               </div>
             </section>
-          </>
-        )}
-
-        {/* ── Active Workspace ── */}
-        {original && (
-          <div className="workspace">
-            {/* Toolbar */}
-            <div className="toolbar">
-              <div className="file-info">
-                <div className="file-dot" />
-                <span className="file-name">{original.name}</span>
-              </div>
-              <div className="toolbar-right">
-                {result && (
-                  <div className="view-toggle">
-                    {[
-                      { id: "split", label: "Split Comparison" },
-                      { id: "result", label: "Result Only" },
-                      { id: "original", label: "Original" },
-                    ].map((v) => (
-                      <button
-                        key={v.id}
-                        className={`toggle-btn ${view === v.id ? "active" : ""}`}
-                        onClick={() => setView(v.id)}
-                      >
-                        {v.label}
-                      </button>
-                    ))}
-                  </div>
-                )}
-                <button className="btn-reset" onClick={resetAll}>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
-                  </svg>
-                  New Image
-                </button>
-              </div>
-            </div>
-
-            {/* Canvas Area */}
-            <div className="canvas-card">
-              {/* ── 1. Split View Mode ── */}
-              {result && view === "split" && (
-                <div
-                  className="compare-slider"
-                  ref={compareRef}
-                  onPointerDown={onPointerDown}
-                  onPointerMove={onPointerMove}
-                  onPointerUp={onPointerUp}
-                  onPointerCancel={onPointerUp}
-                >
-                  {/* Background backdrop (Checkerboard or chosen color) */}
-                  <div
-                    className={`slider-backdrop ${bgColor === "transparent" ? "checkerboard" : ""}`}
-                    style={bgColor !== "transparent" ? { backgroundColor: bgColor } : {}}
-                  />
-
-                  {/* BOTTOM LAYER: Processed Result (Clean Subject on transparent/colored backdrop) */}
-                  <div className="slider-layer result-layer">
-                    <img
-                      src={result}
-                      alt="Processed Result"
-                      draggable={false}
-                    />
-                  </div>
-
-                  {/* TOP LAYER: Original Image (Clipped so only the left side is shown!) */}
-                  <div
-                    className="slider-layer original-layer"
-                    style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
-                  >
-                    <img
-                      src={original.url}
-                      alt="Original Image"
-                      draggable={false}
-                    />
-                  </div>
-
-                  {/* Divider Line & Interactive Handle */}
-                  <div className="divider-line" style={{ left: `${sliderPos}%` }}>
-                    <div className="divider-handle">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <polyline points="15 18 9 12 15 6" />
-                        <polyline points="9 18 3 12 9 6" />
-                      </svg>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transform: "rotate(180deg)" }}>
-                        <polyline points="15 18 9 12 15 6" />
-                        <polyline points="9 18 3 12 9 6" />
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Floating Badges */}
-                  <div className="canvas-badge badge-left">Original</div>
-                  <div className="canvas-badge badge-right">
-                    {bgColor === "transparent" ? "Transparent BG" : "Custom BG"}
-                  </div>
-                </div>
-              )}
-
-              {/* ── 2. Result Only Mode ── */}
-              {result && view === "result" && (
-                <div
-                  className={`single-view ${bgColor === "transparent" ? "checkerboard" : ""}`}
-                  style={bgColor !== "transparent" ? { backgroundColor: bgColor } : {}}
-                >
-                  <img src={result} alt="Background Removed" draggable={false} />
-                  <div className="canvas-badge badge-right">
-                    {bgColor === "transparent" ? "Transparent PNG" : "Custom Color"}
-                  </div>
-                </div>
-              )}
-
-              {/* ── 3. Original Only Mode (or initial preview) ── */}
-              {(!result || view === "original") && (
-                <div className="single-view original-view">
-                  <img src={original.url} alt="Original Image" draggable={false} />
-                  {status === "loading" && (
-                    <div className="laser-scanner-overlay">
-                      <div className="laser-scan-line" />
-                    </div>
-                  )}
-                  <div className="canvas-badge badge-left">
-                    {status === "loading" ? "AI Scanning..." : "Original"}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Background Color Palette (Visible when Result is available) */}
-            {result && (
-              <div className="color-palette-bar">
-                <span className="palette-label">Backdrop:</span>
-                <div className="palette-options">
-                  {PRESET_BG_COLORS.map((c) => (
-                    <button
-                      key={c.name}
-                      title={c.name}
-                      className={`color-btn ${bgColor === c.value ? "active" : ""} ${c.isCheckered ? "checker-btn" : ""}`}
-                      style={!c.isCheckered ? { backgroundColor: c.value } : {}}
-                      onClick={() => setBgColor(c.value)}
-                    >
-                      {bgColor === c.value && (
-                        <span className="check-icon">✓</span>
-                      )}
-                    </button>
-                  ))}
-
-                  {/* Custom color picker */}
-                  <label className="color-picker-label" title="Custom Color">
-                    <input
-                      type="color"
-                      value={customColor}
-                      onChange={(e) => {
-                        setCustomColor(e.target.value);
-                        setBgColor(e.target.value);
-                      }}
-                    />
-                    <span className="color-picker-text">🎨</span>
-                  </label>
-                </div>
-              </div>
-            )}
-
-            {/* Action Bar */}
-            <div className="action-bar">
-              {status === "idle" && (
-                <button className="btn-primary" onClick={processImage}>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                    <path d="m9 11-6 6v3h3l6-6"/>
-                    <path d="m22 2-3 3"/>
-                    <path d="m2 22 3-3"/>
-                    <path d="M22 16l-3-3-7-7 3-3 7 7 3 3z"/>
-                  </svg>
-                  Remove Background Now
-                </button>
-              )}
-
-              {status === "loading" && (
-                <div className="loading-card-3d">
-                  <div className="loading-card-top">
-                    <div className="loading-status-badge">
-                      <span className="pulsing-radar-dot" />
-                      <span>In-Browser AI Neural Engine</span>
-                    </div>
-                    <span className="loading-tech-tag">WASM SIMD</span>
-                  </div>
-
-                  <div className="loading-card-mid">
-                    <div className="loading-scanner-orb">
-                      <span className="orb-icon">✂️</span>
-                    </div>
-                    <div className="loading-text-stack">
-                      <h4>{progressMsg}</h4>
-                      <p>Isolating subject edges locally on your device · 100% Private</p>
-                    </div>
-                    <div className="loading-pct-counter">{progress}%</div>
-                  </div>
-
-                  <div className="loading-bar-shell">
-                    <div
-                      className="loading-bar-fill"
-                      style={{ width: `${progress}%` }}
-                    >
-                      <div className="loading-bar-light" />
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {status === "error" && (
-                <div className="error-box">
-                  <p>{progressMsg}</p>
-                  <button className="btn-primary" onClick={processImage}>
-                    Try Again
-                  </button>
-                </div>
-              )}
-
-              {status === "done" && (
-                <div className="result-actions">
-                  <button className="btn-secondary" onClick={processImage}>
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
-                    </svg>
-                    Re-process
-                  </button>
-                  <button className="btn-download" onClick={downloadImage}>
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                      <polyline points="7 10 12 15 17 10"/>
-                      <line x1="12" y1="15" x2="12" y2="3"/>
-                    </svg>
-                    Download {bgColor === "transparent" ? "Transparent PNG" : "Image"}
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
       </main>
 
       {/* ── Animated Multi-Color Wave Footer ── */}

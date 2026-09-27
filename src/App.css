@@ -1667,6 +1667,206 @@ body {
   background-color: #F8F9FA;
 }
 
+/* ── Manual Touch-Up Studio ── */
+.touchup-container {
+  width: 100%;
+  min-height: 540px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  background: #F8F9FA;
+}
+
+.touchup-tools-strip {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--c-silver);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  z-index: 20;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.tool-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tool-group-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: 2px;
+}
+
+/* Mode Switchers */
+.btn-brush-mode {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid var(--c-silver);
+  background: #FFFFFF;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.btn-brush-mode:hover {
+  transform: translateY(-1px);
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+.btn-brush-mode.active-erase {
+  background: var(--c-coral);
+  color: #FFFFFF;
+  border-color: #E63939;
+  box-shadow: 0 3px 10px rgba(255, 77, 77, 0.35);
+}
+
+.btn-brush-mode.active-restore {
+  background: var(--c-mint);
+  color: #0A2E20;
+  border-color: #32E6A1;
+  box-shadow: 0 3px 10px rgba(77, 255, 188, 0.45);
+}
+
+/* Brush Size Slider */
+.brush-size-group {
+  background: #FFFFFF;
+  border: 1px solid var(--c-silver);
+  padding: 4px 12px;
+  border-radius: 9999px;
+}
+
+.brush-slider {
+  width: 90px;
+  height: 5px;
+  accent-color: var(--c-coral);
+  cursor: pointer;
+}
+
+.brush-dot-preview {
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  transition: width 0.15s ease, height 0.15s ease;
+}
+
+/* Quick Action Buttons */
+.btn-tool-action {
+  padding: 6px 13px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid var(--c-silver);
+  background: #FFFFFF;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.btn-tool-action:hover {
+  background: #F2F4F7;
+  border-color: var(--c-slate);
+  transform: translateY(-1px);
+}
+
+/* History buttons */
+.btn-history {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid var(--c-silver);
+  background: #FFFFFF;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-history:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-history:not(:disabled):hover {
+  background: #F2F4F7;
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.btn-reset-cutout:not(:disabled):hover {
+  color: var(--c-coral);
+  border-color: var(--c-coral);
+}
+
+/* Touchup Drawing Canvas Canvas */
+.touchup-canvas-wrapper {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  cursor: crosshair;
+  touch-action: none;
+  overflow: hidden;
+}
+
+.touchup-canvas {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  display: block;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  user-select: none;
+}
+
+/* Floating Brush Cursor Ring */
+.brush-cursor {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  box-sizing: border-box;
+  transition: width 0.05s linear, height 0.05s linear;
+}
+
+.cursor-erase {
+  border: 2px solid var(--c-coral);
+  background: rgba(255, 77, 77, 0.15);
+  box-shadow: 0 0 6px rgba(255, 77, 77, 0.4);
+}
+
+.cursor-restore {
+  border: 2px solid var(--c-mint);
+  background: rgba(77, 255, 188, 0.2);
+  box-shadow: 0 0 6px rgba(77, 255, 188, 0.5);
+}
+
 /* Divider line & handle */
 .divider-line {
   position: absolute;
@@ -1901,6 +2101,35 @@ body {
   border-color: var(--c-coral);
   color: var(--c-coral);
   background: var(--primary-light);
+}
+
+.btn-copy-clipboard {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFFFFF;
+  border: 1px solid var(--c-silver);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 13px 22px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-copy-clipboard:hover {
+  border-color: var(--c-mint);
+  color: #08261A;
+  background: var(--accent-mint-light);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(77, 255, 188, 0.25);
+}
+
+.btn-copy-clipboard:active {
+  transform: translateY(0);
 }
 
 .btn-download {
