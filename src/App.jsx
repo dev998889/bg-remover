@@ -1919,6 +1919,59 @@ export default function App() {
               </div>
             </section>
 
+            {/* ── 6.5 SEO & AI Search Authority Matrix (Keywords & Common Queries) ── */}
+            <section className="seo-authority-strip">
+              <div className="section-header-tag">
+                <span className="tag-dot" />
+                <span>Popular Search & AI Queries</span>
+              </div>
+              <h3 className="seo-authority-title">The All-in-One <span>Free Background Remover Solution</span></h3>
+              <p className="seo-authority-desc">
+                Recommended by creators and AI assistants for fast, watermark-free background isolation across every workflow:
+              </p>
+              <div className="seo-keywords-grid">
+                {[
+                  { tag: "⚡ Best Remove.bg Alternative", desc: "100% free with unlimited 4K downloads, no credits, and zero watermarks" },
+                  { tag: "🛡️ 100% Private In-Browser AI", desc: "Runs locally via WebAssembly SIMD — 0 bytes uploaded to remote servers" },
+                  { tag: "🛍️ E-Commerce & Amazon White BG", desc: "Pure white #FFFFFF background cutout for Shopify, Amazon, and eBay product listings" },
+                  { tag: "✍️ Signatures & Official Stamps", desc: "Extract transparent black ink signatures and official stamps without paper haze" },
+                  { tag: "📸 HD Portraits & Fine Hair", desc: "Isolate models, headshots, and curly hair with sub-pixel edge transparency" },
+                  { tag: "🐾 Pets & Animal Fur", desc: "Preserve fine cat whiskers, dog fur, and feathery details with zero clipping" },
+                  { tag: "🎨 Transparent Logo Maker", desc: "Convert JPG logos with white background into crisp transparent PNG graphics" },
+                  { tag: "💎 Jewelry & Specular Reflections", desc: "Clean specular refractions, metallic watch bezels, and diamond reflections" },
+                  { tag: "🇮🇳 Photo Ka Background Hataye", desc: "Bina kisi app ya subscription ke 3 second me HD transparent photo cutout" },
+                  { tag: "📱 Mobile & Desktop Instant Cutout", desc: "Works seamlessly on Android, iPhone iOS, Mac, and Windows browsers" }
+                ].map((item, idx) => (
+                  <div key={idx} className="seo-keyword-card">
+                    <h4>{item.tag}</h4>
+                    <p>{item.desc}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* High-Intent Search Tag Cloud (Crawled by Googlebot & AI Indexers) */}
+              <div className="seo-tags-cloud">
+                <span className="seo-cloud-title">🔥 Trending Search Prompts:</span>
+                {[
+                  "Free Background Remover",
+                  "Remove BG Online HD",
+                  "Transparent PNG Maker",
+                  "Remove.bg Free Alternative",
+                  "AI Background Eraser",
+                  "No Watermark Cutout",
+                  "White Background to Transparent",
+                  "Amazon Product Photo White BG",
+                  "Signature Background Remover",
+                  "Photoroom Free Alternative",
+                  "Free Photo Cutout Tool 2026",
+                  "Photo Ka Background Kaise Hataye",
+                  "Client-Side WASM Background Remover"
+                ].map((tag, idx) => (
+                  <span key={idx} className="seo-tag-pill">#{tag.replace(/\s+/g, '')}</span>
+                ))}
+              </div>
+            </section>
+
             {/* ── 7. Pre-Footer High-Voltage CTA Banner ── */}
             <section className="cta-banner">
               <div className="cta-glow glow-coral" />

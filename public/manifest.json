@@ -1,0 +1,22 @@
+{
+  "name": "Cuto BG Remover — 100% Free AI Background Remover",
+  "short_name": "Cuto BG",
+  "description": "Remove backgrounds from images instantly and 100% free with AI. Zero watermarks, unlimited 4K exports.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#14171A",
+  "theme_color": "#14171A",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/cuto_logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
