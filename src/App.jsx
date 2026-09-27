@@ -1055,7 +1055,27 @@ export default function App() {
                   </svg>
                 </div>
                 <h3>Drop Your Image Here — It's 100% Free</h3>
-                <p>or <strong>click to browse files</strong> · Instant automatic cutout</p>
+                <p>Instant automatic background cutout · High precision AI</p>
+
+                {/* ── High-Visibility 3D Upload Button (Clearly Clickable on Laptop & Mobile) ── */}
+                <button
+                  type="button"
+                  className="btn-upload-cta"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    fileInputRef.current && fileInputRef.current.click();
+                  }}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                  </svg>
+                  <span>Upload Image</span>
+                </button>
+
+                <p className="upload-click-hint">or <strong>click anywhere in the box</strong> to browse files</p>
+
                 <div className="format-pills">
                   {["PNG", "JPG", "WEBP", "AVIF", "HEIC"].map((f) => (
                     <span key={f}>{f}</span>

@@ -685,6 +685,81 @@ body[data-theme="dark"] {
   font-weight: 800;
 }
 
+/* 3D Tactile High-Converting Upload CTA Button (Clearly Clickable) */
+.btn-upload-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(180deg, #FFDA00 0%, #FFD600 100%);
+  color: #000000;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 800;
+  padding: 14px 34px;
+  border-radius: 14px;
+  border: 1.5px solid #FFAB00;
+  box-shadow:
+    0 5px 0 #D97706,
+    0 10px 24px rgba(255, 214, 0, 0.45);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+  margin: 6px auto 14px;
+}
+
+.btn-upload-cta:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, #FFE033 0%, #FFDA00 100%);
+  box-shadow:
+    0 7px 0 #D97706,
+    0 14px 28px rgba(255, 214, 0, 0.6);
+}
+
+.btn-upload-cta:active {
+  transform: translateY(3px);
+  box-shadow:
+    0 2px 0 #D97706,
+    0 4px 10px rgba(255, 171, 0, 0.35);
+}
+
+.btn-upload-cta svg {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.btn-upload-cta:hover svg {
+  transform: translateY(-2px);
+}
+
+.upload-click-hint {
+  font-size: 13px !important;
+  color: var(--text-muted) !important;
+  margin-bottom: 18px !important;
+}
+
+.upload-click-hint strong {
+  color: #D97706;
+  font-weight: 700;
+}
+
+[data-theme="dark"] .btn-upload-cta {
+  background: linear-gradient(180deg, #FFD600 0%, #FFAB00 100%);
+  color: #000000;
+  border-color: #FFA000;
+  box-shadow:
+    0 5px 0 #B45309,
+    0 10px 24px rgba(255, 171, 0, 0.35);
+}
+
+[data-theme="dark"] .upload-click-hint {
+  color: #D4B0B7 !important;
+}
+
+[data-theme="dark"] .upload-click-hint strong {
+  color: #FF4D6D !important;
+}
+
 .format-pills {
   display: flex;
   gap: 8px;
@@ -3628,11 +3703,12 @@ body[data-theme="dark"] {
   .upload-icon-wrapper svg { width: 24px; height: 24px; }
   .upload-prompt h3 { font-size: 16px; margin-bottom: 4px; }
   .upload-prompt p { font-size: 12px; margin-bottom: 14px; }
-  .btn-upload {
-    padding: 10px 20px;
-    font-size: 13px;
+  .btn-upload,
+  .btn-upload-cta {
+    padding: 12px 22px;
+    font-size: 14px;
     width: 100%;
-    max-width: 250px;
+    max-width: 280px;
   }
   .upload-limits { font-size: 11px; margin-top: 10px; }
 
