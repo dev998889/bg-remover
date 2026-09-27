@@ -1894,8 +1894,9 @@ body {
   display: block;
 }
 
-/* Parallax Moving Waves Animation */
+/* Parallax Moving Waves Animation - 100% Solid Constant Colors */
 .parallax-waves > use {
+  opacity: 1 !important;
   animation: move-waves 25s cubic-bezier(0.55, 0.5, 0.45, 0.5) infinite;
 }
 

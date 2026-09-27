@@ -1068,32 +1068,15 @@ export default function App() {
                 id="gentle-wave"
                 d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
               />
-              {/* Wave 1: Electric Coral Red (#FF4D4D) - Topmost Vibrant Wave */}
-              <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#FF4D4D" />
-                <stop offset="100%" stopColor="#FF6B6B" />
-              </linearGradient>
-
-              {/* Wave 2: Neon Mint (#4DFFBC) */}
-              <linearGradient id="wave2" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#4DFFBC" />
-                <stop offset="100%" stopColor="#2EE59D" />
-              </linearGradient>
-
-              {/* Wave 3: Silver (#D9D9D9) to Slate Gray (#898989) */}
-              <linearGradient id="wave3" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#D9D9D9" />
-                <stop offset="100%" stopColor="#898989" />
-              </linearGradient>
             </defs>
             <g className="parallax-waves">
-              {/* Wave 1: Electric Coral */}
-              <use xlinkHref="#gentle-wave" x="48" y="0" fill="url(#wave1)" />
-              {/* Wave 2: Neon Mint */}
-              <use xlinkHref="#gentle-wave" x="48" y="2" fill="url(#wave2)" />
-              {/* Wave 3: Silver to Slate */}
-              <use xlinkHref="#gentle-wave" x="48" y="4" fill="url(#wave3)" />
-              {/* Wave 4: Deep Carbon Base connecting to footer background */}
+              {/* Wave 1: Solid Electric Coral Red (#FF4D4D) - Constant color */}
+              <use xlinkHref="#gentle-wave" x="48" y="0" fill="#FF4D4D" />
+              {/* Wave 2: Solid Neon Mint (#4DFFBC) - Constant color */}
+              <use xlinkHref="#gentle-wave" x="48" y="2" fill="#4DFFBC" />
+              {/* Wave 3: Solid Slate Gray (#898989) - Constant color */}
+              <use xlinkHref="#gentle-wave" x="48" y="4" fill="#898989" />
+              {/* Wave 4: Solid Deep Carbon (#181A1D) - Seamless footer base */}
               <use xlinkHref="#gentle-wave" x="48" y="7" fill="#181A1D" />
             </g>
           </svg>
