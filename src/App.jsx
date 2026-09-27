@@ -80,6 +80,7 @@ export default function App() {
   const fileInputRef = useRef(null);
   const compareRef = useRef(null);
   const isDraggingSlider = useRef(false);
+  const progressTimerRef = useRef(null);
 
   // ── Running Example Showcase State ──
   const [activeShowcaseId, setActiveShowcaseId] = useState("ecommerce");
@@ -91,6 +92,12 @@ export default function App() {
   // ── FAQ Accordion State ──
   const [openFaq, setOpenFaq] = useState(0);
   const toggleFaq = (idx) => setOpenFaq((prev) => (prev === idx ? null : idx));
+
+  useEffect(() => {
+    return () => {
+      if (progressTimerRef.current) clearInterval(progressTimerRef.current);
+    };
+  }, []);
 
   const activeShowcase = SHOWCASE_CATEGORIES.find((c) => c.id === activeShowcaseId) || SHOWCASE_CATEGORIES[0];
 
@@ -140,8 +147,26 @@ export default function App() {
   const runRemoval = async (fileToProcess) => {
     if (!fileToProcess) return;
     setStatus("loading");
-    setProgress(15);
-    setProgressMsg("Analyzing subject & edges...");
+
+    // Dynamic, fluid progress simulation so it never hangs statically at 15%
+    if (progressTimerRef.current) clearInterval(progressTimerRef.current);
+    let currentPct = 16;
+    setProgress(currentPct);
+    setProgressMsg("Scanning image & detecting edges...");
+
+    progressTimerRef.current = setInterval(() => {
+      currentPct += Math.max(1, Math.floor((92 - currentPct) / 6));
+      if (currentPct >= 92) {
+        clearInterval(progressTimerRef.current);
+      } else {
+        setProgress(currentPct);
+        if (currentPct > 65) {
+          setProgressMsg("Erasing background pixels with AI...");
+        } else if (currentPct > 35) {
+          setProgressMsg("Isolating subject boundaries...");
+        }
+      }
+    }, 280);
 
     try {
       let blob;
@@ -150,11 +175,9 @@ export default function App() {
           progress: (key, current, total) => {
             if (total > 0) {
               const pct = Math.round((current / total) * 100);
-              setProgress(Math.min(95, Math.max(15, pct)));
-              if (key.includes("fetch")) {
-                setProgressMsg("Loading AI model...");
-              } else {
-                setProgressMsg("Erasing background with AI...");
+              if (pct > currentPct) {
+                currentPct = Math.min(95, pct);
+                setProgress(currentPct);
               }
             }
           },
@@ -168,6 +191,8 @@ export default function App() {
         blob = await removeBackground(fileToProcess);
       }
 
+      if (progressTimerRef.current) clearInterval(progressTimerRef.current);
+
       const url = URL.createObjectURL(blob);
       setResultBlob(blob);
       setResult(url);
@@ -177,6 +202,7 @@ export default function App() {
       setView("split");
       setSliderPos(50);
     } catch (err) {
+      if (progressTimerRef.current) clearInterval(progressTimerRef.current);
       console.error("Background removal error:", err);
       setStatus("error");
       setProgressMsg("Failed to remove background. Please try another image.");
@@ -1019,7 +1045,14 @@ export default function App() {
               {(!result || view === "original") && (
                 <div className="single-view original-view">
                   <img src={original.url} alt="Original Image" draggable={false} />
-                  <div className="canvas-badge badge-left">Original</div>
+                  {status === "loading" && (
+                    <div className="laser-scanner-overlay">
+                      <div className="laser-scan-line" />
+                    </div>
+                  )}
+                  <div className="canvas-badge badge-left">
+                    {status === "loading" ? "AI Scanning..." : "Original"}
+                  </div>
                 </div>
               )}
             </div>
@@ -1074,15 +1107,34 @@ export default function App() {
               )}
 
               {status === "loading" && (
-                <div className="progress-area">
-                  <div className="progress-label">
-                    <div className="progress-spinner" />
-                    <span>{progressMsg}</span>
+                <div className="loading-card-3d">
+                  <div className="loading-card-top">
+                    <div className="loading-status-badge">
+                      <span className="pulsing-radar-dot" />
+                      <span>In-Browser AI Neural Engine</span>
+                    </div>
+                    <span className="loading-tech-tag">WASM SIMD</span>
                   </div>
-                  <div className="progress-bar">
-                    <div className="progress-fill" style={{ width: `${progress}%` }} />
+
+                  <div className="loading-card-mid">
+                    <div className="loading-scanner-orb">
+                      <span className="orb-icon">✂️</span>
+                    </div>
+                    <div className="loading-text-stack">
+                      <h4>{progressMsg}</h4>
+                      <p>Isolating subject edges locally on your device · 100% Private</p>
+                    </div>
+                    <div className="loading-pct-counter">{progress}%</div>
                   </div>
-                  <div className="progress-pct">{progress}%</div>
+
+                  <div className="loading-bar-shell">
+                    <div
+                      className="loading-bar-fill"
+                      style={{ width: `${progress}%` }}
+                    >
+                      <div className="loading-bar-light" />
+                    </div>
+                  </div>
                 </div>
               )}
 

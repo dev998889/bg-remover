@@ -1927,56 +1927,189 @@ body {
 }
 
 /* ── Progress ── */
-.progress-area {
+/* ── Laser Scanner Overlay on Image Canvas ── */
+.laser-scanner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 480px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 8;
+  border-radius: inherit;
 }
 
-.progress-label {
+.laser-scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, var(--c-coral) 50%, transparent 100%);
+  box-shadow: 0 0 16px 2px var(--c-coral), 0 0 6px 1px #FFFFFF;
+  animation: laserScan 2s ease-in-out infinite alternate;
+}
+
+@keyframes laserScan {
+  0% { top: 0%; opacity: 0.85; }
+  100% { top: 98%; opacity: 0.85; }
+}
+
+/* ── 3D AI Processing Loading Card ── */
+.loading-card-3d {
+  width: 100%;
+  max-width: 520px;
+  background: #FFFFFF;
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 22px 26px;
+  box-shadow:
+    0 4px 6px -1px rgba(24, 26, 29, 0.05),
+    0 16px 36px -4px rgba(24, 26, 29, 0.1),
+    inset 0 1px 0 #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeIn 0.3s ease;
+}
+
+.loading-card-top {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  font-weight: 600;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.loading-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
   color: var(--text-secondary);
 }
 
-.progress-spinner {
-  width: 18px;
-  height: 18px;
-  border: 2.5px solid var(--c-silver);
-  border-top-color: var(--c-coral);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.progress-bar {
-  width: 100%;
+.pulsing-radar-dot {
+  width: 8px;
   height: 8px;
-  background-color: var(--c-silver);
+  border-radius: 50%;
+  background: var(--c-coral);
+  box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7);
+  animation: radarPulse 1.5s infinite;
+}
+
+@keyframes radarPulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(255, 77, 77, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); }
+}
+
+.loading-tech-tag {
+  font-size: 11px;
+  font-weight: 800;
+  color: #086641;
+  background: rgba(77, 255, 188, 0.2);
+  border: 1px solid rgba(77, 255, 188, 0.4);
+  padding: 3px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+}
+
+.loading-card-mid {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.loading-scanner-orb {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(255, 77, 77, 0.15) 0%, rgba(77, 255, 188, 0.15) 100%);
+  border: 1px solid var(--c-silver);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  animation: floatOrb 2.4s ease-in-out infinite alternate;
+}
+
+@keyframes floatOrb {
+  0% { transform: translateY(0); box-shadow: 0 2px 8px rgba(255, 77, 77, 0.15); }
+  100% { transform: translateY(-4px); box-shadow: 0 8px 18px rgba(77, 255, 188, 0.25); }
+}
+
+.loading-text-stack {
+  flex: 1;
+}
+
+.loading-text-stack h4 {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+  letter-spacing: -0.2px;
+}
+
+.loading-text-stack p {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.loading-pct-counter {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--c-coral);
+  background: rgba(255, 77, 77, 0.08);
+  border: 1px solid rgba(255, 77, 77, 0.2);
+  padding: 6px 12px;
+  border-radius: 10px;
+  letter-spacing: -0.5px;
+}
+
+/* ── Progress Track with Glowing Fill & Shimmer ── */
+.loading-bar-shell {
+  width: 100%;
+  height: 10px;
+  background: #EFEFEF;
   border-radius: 9999px;
   overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08);
+  position: relative;
 }
 
-.progress-fill {
+.loading-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--c-coral), #FF7373, var(--c-mint));
+  background: linear-gradient(90deg, #FF4D4D 0%, #FF6666 80%, #4DFFBC 100%);
   border-radius: 9999px;
-  transition: width 0.4s ease;
+  transition: width 0.35s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 12px rgba(255, 77, 77, 0.45);
 }
 
-.progress-pct {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--c-coral);
+.loading-bar-light {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 100%
+  );
+  animation: shimmerSweep 1.6s infinite;
+}
+
+@keyframes shimmerSweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 .error-box {
