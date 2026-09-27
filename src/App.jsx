@@ -983,14 +983,14 @@ export default function App() {
               />
             </defs>
             <g className="parallax-waves">
-              {/* Wave 1: Warm Sunset Glow */}
-              <use xlinkHref="#nav-gentle-wave" x="48" y="0" fill={theme === "dark" ? "rgba(154, 13, 27, 0.35)" : "rgba(255, 111, 0, 0.28)"} />
-              {/* Wave 2: Rich Honey Amber */}
-              <use xlinkHref="#nav-gentle-wave" x="48" y="2" fill={theme === "dark" ? "rgba(106, 4, 15, 0.55)" : "rgba(255, 171, 0, 0.45)"} />
-              {/* Wave 3: Bright Sunshine Gold */}
-              <use xlinkHref="#nav-gentle-wave" x="48" y="4" fill={theme === "dark" ? "rgba(85, 8, 22, 0.75)" : "rgba(255, 218, 0, 0.7)"} />
-              {/* Wave 4: Seamless Brand Yellow / Wine Base matching Navbar */}
-              <use xlinkHref="#nav-gentle-wave" x="48" y="7" fill={theme === "dark" ? "#1D0515" : "#FFD600"} />
+              {/* Wave 1: Primary Brand Yellow (#FFD600) */}
+              <use xlinkHref="#nav-gentle-wave" x="48" y="0" fill={theme === "dark" ? "#9A0D1B" : "#FFD600"} />
+              {/* Wave 2: Sunset Orange (#FF6F00) */}
+              <use xlinkHref="#nav-gentle-wave" x="48" y="2" fill={theme === "dark" ? "#6A040F" : "#FF6F00"} />
+              {/* Wave 3: Amber Gold (#FFAB00) */}
+              <use xlinkHref="#nav-gentle-wave" x="48" y="4" fill={theme === "dark" ? "#550816" : "#FFAB00"} />
+              {/* Wave 4: Deep Carbon Black (#14171A) seamlessly merging with Black Navbar */}
+              <use xlinkHref="#nav-gentle-wave" x="48" y="7" fill={theme === "dark" ? "#1D0515" : "#14171A"} />
             </g>
           </svg>
         </div>
