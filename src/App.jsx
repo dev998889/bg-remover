@@ -4,14 +4,12 @@ import "./App.css";
 
 const PRESET_BG_COLORS = [
   { name: "Transparent", value: "transparent", isCheckered: true },
-  { name: "Harvest Gold", value: "#E1A36F" },
-  { name: "Calico", value: "#DEC484" },
-  { name: "Hampton Linen", value: "#E2D8A5" },
-  { name: "Sea Nymph Teal", value: "#6F9F9C" },
-  { name: "Smalt Blue", value: "#577E89" },
-  { name: "Soft White", value: "#FAF8F5" },
+  { name: "Electric Coral", value: "#FF4D4D" },
+  { name: "Neon Mint", value: "#4DFFBC" },
+  { name: "Slate Gray", value: "#898989" },
+  { name: "Silver White", value: "#D9D9D9" },
   { name: "Pure White", value: "#FFFFFF" },
-  { name: "Deep Charcoal", value: "#2C3E44" },
+  { name: "Carbon Black", value: "#181A1D" },
 ];
 
 const SHOWCASE_CATEGORIES = [
@@ -22,7 +20,7 @@ const SHOWCASE_CATEGORIES = [
     desc: "Remove other products, tags, labels, watermarks and other distractions in your product photos.",
     image: "/samples/sample_headphones.png",
     filename: "sample_headphones.png",
-    bgBackdrop: "#DEC484", // Calico Warm Sand
+    bgBackdrop: "#898989", // Slate Gray
     badge: "Audio Gear",
   },
   {
@@ -32,7 +30,7 @@ const SHOWCASE_CATEGORIES = [
     desc: "Create crisp Amazon, Shopify, and Instagram product listings with high-contrast outlines.",
     image: "/samples/sample_sneaker.png",
     filename: "sample_sneaker.png",
-    bgBackdrop: "#E1A36F", // Harvest Gold
+    bgBackdrop: "#FF4D4D", // Electric Coral Red
     badge: "Footwear",
   },
   {
@@ -42,7 +40,7 @@ const SHOWCASE_CATEGORIES = [
     desc: "Replace busy dealership lots and distracting street backgrounds with sleek studio staging.",
     image: "/samples/sample_porsche.png",
     filename: "sample_porsche.png",
-    bgBackdrop: "#577E89", // Smalt Blue
+    bgBackdrop: "#181A1D", // Carbon Black
     badge: "Vehicles",
   },
   {
@@ -52,7 +50,7 @@ const SHOWCASE_CATEGORIES = [
     desc: "Advanced edge matting accurately captures fine whiskers, fur textures, and animal contours.",
     image: "/samples/sample_dog.png",
     filename: "sample_dog.png",
-    bgBackdrop: "#6F9F9C", // Sea Nymph Teal
+    bgBackdrop: "#4DFFBC", // Neon Mint
     badge: "Pets & Wildlife",
   },
   {
@@ -62,7 +60,7 @@ const SHOWCASE_CATEGORIES = [
     desc: "Eliminate reflection artifacts and uneven backdrops to highlight the craftsmanship of luxury jewels.",
     image: "/samples/sample_watch.png",
     filename: "sample_watch.png",
-    bgBackdrop: "#E2D8A5", // Hampton Linen
+    bgBackdrop: "#D9D9D9", // Silver Gray
     badge: "Luxury Watches",
   },
 ];
@@ -751,33 +749,33 @@ export default function App() {
                 id="gentle-wave"
                 d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
               />
-              {/* Wave 1: Harvest Gold (#E1A36F) to Calico (#DEC484) - Topmost Warm Wave */}
+              {/* Wave 1: Electric Coral Red (#FF4D4D) - Topmost Vibrant Wave */}
               <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#E1A36F" />
-                <stop offset="100%" stopColor="#DEC484" />
+                <stop offset="0%" stopColor="#FF4D4D" />
+                <stop offset="100%" stopColor="#FF6B6B" />
               </linearGradient>
 
-              {/* Wave 2: Calico (#DEC484) to Hampton Linen (#E2D8A5) */}
+              {/* Wave 2: Neon Mint (#4DFFBC) */}
               <linearGradient id="wave2" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#DEC484" />
-                <stop offset="100%" stopColor="#E2D8A5" />
+                <stop offset="0%" stopColor="#4DFFBC" />
+                <stop offset="100%" stopColor="#2EE59D" />
               </linearGradient>
 
-              {/* Wave 3: Sea Nymph Teal (#6F9F9C) to Smalt Blue (#577E89) */}
+              {/* Wave 3: Silver (#D9D9D9) to Slate Gray (#898989) */}
               <linearGradient id="wave3" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#6F9F9C" />
-                <stop offset="100%" stopColor="#577E89" />
+                <stop offset="0%" stopColor="#D9D9D9" />
+                <stop offset="100%" stopColor="#898989" />
               </linearGradient>
             </defs>
             <g className="parallax-waves">
-              {/* Wave 1: Harvest Gold */}
+              {/* Wave 1: Electric Coral */}
               <use xlinkHref="#gentle-wave" x="48" y="0" fill="url(#wave1)" />
-              {/* Wave 2: Calico Sand */}
+              {/* Wave 2: Neon Mint */}
               <use xlinkHref="#gentle-wave" x="48" y="2" fill="url(#wave2)" />
-              {/* Wave 3: Sea Nymph Teal */}
+              {/* Wave 3: Silver to Slate */}
               <use xlinkHref="#gentle-wave" x="48" y="4" fill="url(#wave3)" />
-              {/* Wave 4: Smalt Blue Base connecting to footer background */}
-              <use xlinkHref="#gentle-wave" x="48" y="7" fill="#577E89" />
+              {/* Wave 4: Deep Carbon Base connecting to footer background */}
+              <use xlinkHref="#gentle-wave" x="48" y="7" fill="#181A1D" />
             </g>
           </svg>
         </div>
