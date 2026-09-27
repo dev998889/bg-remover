@@ -329,6 +329,55 @@ export default function App() {
     setDragging(true);
   };
 
+  // ── Global Full-Screen Drag and Drop ──
+  useEffect(() => {
+    let dragCounter = 0;
+
+    const handleWindowDragEnter = (e) => {
+      e.preventDefault();
+      dragCounter++;
+      if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
+        setDragging(true);
+      }
+    };
+
+    const handleWindowDragOver = (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "copy";
+      if (!dragging) setDragging(true);
+    };
+
+    const handleWindowDragLeave = (e) => {
+      e.preventDefault();
+      dragCounter--;
+      if (dragCounter <= 0) {
+        setDragging(false);
+        dragCounter = 0;
+      }
+    };
+
+    const handleWindowDrop = (e) => {
+      e.preventDefault();
+      dragCounter = 0;
+      setDragging(false);
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        loadFile(e.dataTransfer.files[0]);
+      }
+    };
+
+    window.addEventListener("dragenter", handleWindowDragEnter);
+    window.addEventListener("dragover", handleWindowDragOver);
+    window.addEventListener("dragleave", handleWindowDragLeave);
+    window.addEventListener("drop", handleWindowDrop);
+
+    return () => {
+      window.removeEventListener("dragenter", handleWindowDragEnter);
+      window.removeEventListener("dragover", handleWindowDragOver);
+      window.removeEventListener("dragleave", handleWindowDragLeave);
+      window.removeEventListener("drop", handleWindowDrop);
+    };
+  }, [loadFile, dragging]);
+
   const processImage = () => {
     if (original?.file) {
       runRemoval(original.file);
@@ -756,66 +805,88 @@ export default function App() {
 
       <main className="main">
         {/* ── Top Workspace or Upload State ── */}
+        {/* ── Global Full-Screen Drag & Drop Overlay ── */}
+        {dragging && (
+          <div className="global-drag-overlay" onDrop={onDrop} onDragOver={onDragOver}>
+            <div className="global-drag-modal">
+              <div className="drag-pulse-icon">
+                <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+              </div>
+              <h2>Drop Image Anywhere!</h2>
+              <p>Release anywhere on the screen to erase background instantly with AI</p>
+            </div>
+          </div>
+        )}
+
+        {/* ── Top Workspace or 2-Column Split Hero Layout ── */}
         {!original ? (
-          <>
-            <div className="hero">
+          <section className="hero-split-section">
+            {/* Left Column: Copy & Trust Highlights */}
+            <div className="hero-left-column">
               <div className="hero-pill-badge">
                 <span className="badge-sparkle">🎉</span>
                 <span>100% Free Online Background Remover · No Sign-Up</span>
               </div>
               <h2>Erase Image Backgrounds <span>Instantly & 100% Free</span></h2>
               <p>Cutting-edge in-browser AI removes backgrounds in seconds with sub-pixel precision. Zero watermarks, no login, unlimited exports, and your photos never leave your device.</p>
-            </div>
 
-            <div
-              className={`upload-zone ${dragging ? "dragging" : ""}`}
-              onClick={() => fileInputRef.current && fileInputRef.current.click()}
-              onDragOver={onDragOver}
-              onDragLeave={() => setDragging(false)}
-              onDrop={onDrop}
-            >
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/*"
-                onChange={onInputChange}
-                hidden
-              />
-              <div className="upload-icon-wrap">
-                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                  <polyline points="17 8 12 3 7 8"/>
-                  <line x1="12" y1="3" x2="12" y2="15"/>
-                </svg>
-              </div>
-              <h3>Drop Your Image Here — It's 100% Free</h3>
-              <p>or <strong>click to browse files</strong> · Instant automatic cutout</p>
-              <div className="format-pills">
-                {["PNG", "JPG", "WEBP", "AVIF", "HEIC"].map((f) => (
-                  <span key={f}>{f}</span>
-                ))}
+              {/* Trust Highlights Row */}
+              <div className="hero-trust-bar">
+                <span className="trust-item">
+                  <span className="trust-check">✓</span> 100% Free Forever
+                </span>
+                <span className="trust-item">
+                  <span className="trust-check">✓</span> No Sign-Up Required
+                </span>
+                <span className="trust-item">
+                  <span className="trust-check">✓</span> Zero Watermarks
+                </span>
+                <span className="trust-item">
+                  <span className="trust-check">✓</span> Full Original HD
+                </span>
+                <span className="trust-item">
+                  <span className="trust-check">✓</span> 100% Private (Runs locally)
+                </span>
               </div>
             </div>
 
-            {/* Trust Highlights Row */}
-            <div className="hero-trust-bar">
-              <span className="trust-item">
-                <span className="trust-check">✓</span> 100% Free Forever
-              </span>
-              <span className="trust-item">
-                <span className="trust-check">✓</span> No Sign-Up Required
-              </span>
-              <span className="trust-item">
-                <span className="trust-check">✓</span> Zero Watermarks
-              </span>
-              <span className="trust-item">
-                <span className="trust-check">✓</span> Full Original HD
-              </span>
-              <span className="trust-item">
-                <span className="trust-check">✓</span> 100% Private (Runs locally)
-              </span>
+            {/* Right Column: Upload Box */}
+            <div className="hero-right-column">
+              <div
+                className={`upload-zone ${dragging ? "dragging" : ""}`}
+                onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                onDragOver={onDragOver}
+                onDragLeave={() => setDragging(false)}
+                onDrop={onDrop}
+              >
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={onInputChange}
+                  hidden
+                />
+                <div className="upload-icon-wrap">
+                  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                  </svg>
+                </div>
+                <h3>Drop Your Image Here — It's 100% Free</h3>
+                <p>or <strong>click to browse files</strong> · Instant automatic cutout</p>
+                <div className="format-pills">
+                  {["PNG", "JPG", "WEBP", "AVIF", "HEIC"].map((f) => (
+                    <span key={f}>{f}</span>
+                  ))}
+                </div>
+              </div>
             </div>
-          </>
+          </section>
         ) : (
           <div className="workspace">
             {/* Toolbar */}
