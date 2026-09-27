@@ -3,15 +3,16 @@ import { removeBackground, preload } from "@imgly/background-removal";
 import LegalModal from "./LegalPages";
 import "./App.css";
 
-// ── Light & Dark Theme Color Presets (Moody Botanical Palette from user design) ──
+// ── Light & Dark Theme Color Presets (Light: User's Black & Yellow Logo Palette) ──
 const PRESET_BG_COLORS_LIGHT = [
   { name: "Transparent", value: "transparent", isCheckered: true },
-  { name: "Electric Coral", value: "#FF4D4D" },
-  { name: "Neon Mint", value: "#4DFFBC" },
-  { name: "Slate Gray", value: "#898989" },
-  { name: "Silver White", value: "#D9D9D9" },
+  { name: "Cuto Yellow", value: "#FFD600" },
+  { name: "Lemon Bright", value: "#FFDA00" },
+  { name: "Amber Gold", value: "#FFAB00" },
+  { name: "Sunset Orange", value: "#FF6F00" },
+  { name: "Jet Black", value: "#000000" },
   { name: "Pure White", value: "#FFFFFF" },
-  { name: "Carbon Black", value: "#181A1D" },
+  { name: "Silver Gray", value: "#E2E4E8" },
 ];
 
 const PRESET_BG_COLORS_DARK = [
@@ -32,7 +33,7 @@ const SHOWCASE_CATEGORIES = [
     desc: "Remove other products, tags, labels, watermarks and other distractions in your product photos.",
     image: "/samples/sample_headphones.png",
     filename: "sample_headphones.png",
-    bgBackdrop: "#898989", // Slate Gray
+    bgBackdrop: "#000000", // Jet Black
     badge: "Audio Gear",
   },
   {
@@ -42,7 +43,7 @@ const SHOWCASE_CATEGORIES = [
     desc: "Create crisp Amazon, Shopify, and Instagram product listings with high-contrast outlines.",
     image: "/samples/sample_sneaker.png",
     filename: "sample_sneaker.png",
-    bgBackdrop: "#FF4D4D", // Electric Coral Red
+    bgBackdrop: "#FFD600", // Cuto Golden Yellow
     badge: "Footwear",
   },
   {
@@ -52,7 +53,7 @@ const SHOWCASE_CATEGORIES = [
     desc: "Replace busy dealership lots and distracting street backgrounds with sleek studio staging.",
     image: "/samples/sample_porsche.png",
     filename: "sample_porsche.png",
-    bgBackdrop: "#181A1D", // Carbon Black
+    bgBackdrop: "#14171A", // Carbon Black
     badge: "Vehicles",
   },
   {
@@ -62,7 +63,7 @@ const SHOWCASE_CATEGORIES = [
     desc: "Advanced edge matting accurately captures fine whiskers, fur textures, and animal contours.",
     image: "/samples/sample_dog.png",
     filename: "sample_dog.png",
-    bgBackdrop: "#4DFFBC", // Neon Mint
+    bgBackdrop: "#FFAB00", // Amber Gold
     badge: "Pets & Wildlife",
   },
   {
@@ -72,7 +73,7 @@ const SHOWCASE_CATEGORIES = [
     desc: "Eliminate reflection artifacts and uneven backdrops to highlight the craftsmanship of luxury jewels.",
     image: "/samples/sample_watch.png",
     filename: "sample_watch.png",
-    bgBackdrop: "#D9D9D9", // Silver Gray
+    bgBackdrop: "#FF6F00", // Sunset Orange
     badge: "Luxury Watches",
   },
 ];
@@ -1680,14 +1681,14 @@ export default function App() {
               />
             </defs>
             <g className="parallax-waves">
-              {/* Wave 1: Coral in Light / Rich Berry Fuchsia (#C02674) in Dark */}
-              <use xlinkHref="#gentle-wave" x="48" y="0" fill={theme === "dark" ? "#C02674" : "#FF4D4D"} />
-              {/* Wave 2: Mint in Light / Dark Forest Pine (#1C4443) in Dark */}
-              <use xlinkHref="#gentle-wave" x="48" y="2" fill={theme === "dark" ? "#1C4443" : "#4DFFBC"} />
-              {/* Wave 3: Slate in Light / Deep Plum (#5B253D) in Dark */}
-              <use xlinkHref="#gentle-wave" x="48" y="4" fill={theme === "dark" ? "#5B253D" : "#898989"} />
-              {/* Wave 4: Deep Carbon in Light / Deep Obsidian (#101517) in Dark */}
-              <use xlinkHref="#gentle-wave" x="48" y="7" fill={theme === "dark" ? "#101517" : "#181A1D"} />
+              {/* Wave 1: Brand Golden Yellow (#FFD600) in Light / Rich Berry Fuchsia (#C02674) in Dark */}
+              <use xlinkHref="#gentle-wave" x="48" y="0" fill={theme === "dark" ? "#C02674" : "#FFD600"} />
+              {/* Wave 2: Sunset Orange (#FF6F00) in Light / Dark Forest Pine (#1C4443) in Dark */}
+              <use xlinkHref="#gentle-wave" x="48" y="2" fill={theme === "dark" ? "#1C4443" : "#FF6F00"} />
+              {/* Wave 3: Amber Gold (#FFAB00) in Light / Deep Plum (#5B253D) in Dark */}
+              <use xlinkHref="#gentle-wave" x="48" y="4" fill={theme === "dark" ? "#5B253D" : "#FFAB00"} />
+              {/* Wave 4: Deep Carbon Black (#14171A) in Light / Deep Obsidian (#101517) in Dark */}
+              <use xlinkHref="#gentle-wave" x="48" y="7" fill={theme === "dark" ? "#101517" : "#14171A"} />
             </g>
           </svg>
         </div>
