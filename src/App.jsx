@@ -703,8 +703,8 @@ export default function App() {
               <div className="icon-3d-shine" />
             </div>
             <div className="logo-text">
-              <h1>BG<span>Eraser</span></h1>
-              <p>100% Free AI Background Remover</p>
+              <h1>Cuto<span>BG</span></h1>
+              <p>AI Background Remover</p>
             </div>
           </div>
 
@@ -1377,14 +1377,14 @@ export default function App() {
               </div>
               <h2 className="section-title">How Is This <span>100% Free With Zero Limits?</span></h2>
               <p className="section-subtitle">
-                Most websites let you remove 1 background, and then trap you with mandatory subscriptions or paywalls. Here is the honest technical reason why BG Eraser is completely free.
+                Most websites let you remove 1 background, and then trap you with mandatory subscriptions or paywalls. Here is the honest technical reason why Cuto BG Remover is completely free.
               </p>
 
               <div className="why-free-grid">
                 <div className="why-free-card">
                   <div className="why-free-icon icon-coral">💻</div>
                   <h3>Powered By Your Own Hardware</h3>
-                  <p>Old-school tools send your photos to expensive cloud GPU servers, which costs them money for every single upload. BG Eraser runs the AI neural network directly in your browser using WebAssembly. Your device executes the model locally, so our server costs are nearly zero.</p>
+                  <p>Old-school tools send your photos to expensive cloud GPU servers, which costs them money for every single upload. Cuto BG Remover runs the AI neural network directly in your browser using WebAssembly. Your device executes the model locally, so our server costs are nearly zero.</p>
                 </div>
 
                 <div className="why-free-card">
@@ -1396,7 +1396,7 @@ export default function App() {
                 <div className="why-free-card">
                   <div className="why-free-icon icon-slate">💎</div>
                   <h3>Full Original Resolution (No Blur)</h3>
-                  <p>Other tools purposely downscale free cutouts to 0.25 megapixels and demand $0.90 to unlock HD. BG Eraser exports uncompressed PNG files at your photo's full native resolution, up to 4K.</p>
+                  <p>Other tools purposely downscale free cutouts to 0.25 megapixels and demand $0.90 to unlock HD. Cuto BG Remover exports uncompressed PNG files at your photo's full native resolution, up to 4K.</p>
                 </div>
 
                 <div className="why-free-card">
@@ -1426,7 +1426,7 @@ export default function App() {
                       <th className="th-us">
                         <div className="th-us-badge">
                           <span className="th-sparkle">⚡</span>
-                          <strong>BG Eraser (This App)</strong>
+                          <strong>Cuto BG Remover (This App)</strong>
                         </div>
                       </th>
                       <th className="th-cloud">Traditional Cloud Tools (Remove.bg / Magic Studio)</th>
@@ -1537,7 +1537,7 @@ export default function App() {
                 <div className="testimonial-card">
                   <div className="testimonial-stars">★★★★★</div>
                   <p className="testimonial-quote">
-                    "I process over 80 product photos every single morning for our Shopify store. Other tools were charging us $40/month just for credits. BG Eraser runs instantly right inside Chrome and the edge quality on our sneakers is unbelievable."
+                    "I process over 80 product photos every single morning for our Shopify store. Other tools were charging us $40/month just for credits. Cuto BG Remover runs instantly right inside Chrome and the edge quality on our sneakers is unbelievable."
                   </p>
                   <div className="testimonial-author">
                     <div className="author-avatar avatar-coral">RK</div>
@@ -1552,7 +1552,7 @@ export default function App() {
                   <div className="testimonial-badge">⭐ Top Pick</div>
                   <div className="testimonial-stars">★★★★★</div>
                   <p className="testimonial-quote">
-                    "The client confidentiality rule at our agency prohibits uploading client portrait shoots to cloud AI APIs. Because BG Eraser executes 100% locally on the client device via WebAssembly, we can isolate subjects with total legal safety."
+                    "The client confidentiality rule at our agency prohibits uploading client portrait shoots to cloud AI APIs. Because Cuto BG Remover executes 100% locally on the client device via WebAssembly, we can isolate subjects with total legal safety."
                   </p>
                   <div className="testimonial-author">
                     <div className="author-avatar avatar-mint">SM</div>
@@ -1592,10 +1592,10 @@ export default function App() {
                 {[
                   {
                     q: "Is my photo ever sent to your server or stored anywhere?",
-                    a: "No, absolutely never! Unlike other background removal websites that upload your image to their cloud servers, BG Eraser runs the AI neural network directly inside your web browser using WebAssembly. Your photos never leave your device, ensuring 100% privacy for confidential work, IDs, and personal photos."
+                    a: "No, absolutely never! Unlike other background removal websites that upload your image to their cloud servers, Cuto BG Remover runs the AI neural network directly inside your web browser using WebAssembly. Your photos never leave your device, ensuring 100% privacy for confidential work, IDs, and personal photos."
                   },
                   {
-                    q: "Why is BG Eraser completely free without monthly subscription plans?",
+                    q: "Why is Cuto BG Remover completely free without monthly subscription plans?",
                     a: "Because all the AI processing computations happen directly on your own computer's processor (CPU/WASM), we don't have massive cloud GPU server bills to pay on every image. This allows us to offer completely unlimited, watermark-free background removal forever for free."
                   },
                   {
@@ -1757,7 +1757,7 @@ export default function App() {
 
           <div className="footer-bottom-row">
             <div className="footer-copyright">
-              <span>© BG Eraser, a free 100% in-browser AI tool</span>
+              <span>© Cuto BG Remover, a free 100% in-browser AI tool</span>
             </div>
             <div className="footer-links">
               <a href="#terms" onClick={(e) => { e.preventDefault(); openLegalDoc("terms"); }}>Terms of Service</a>

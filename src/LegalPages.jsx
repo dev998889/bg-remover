@@ -11,7 +11,7 @@ export const LEGAL_PAGES = {
         <section>
           <h3>1. Acceptance of Terms</h3>
           <p>
-            By accessing or using <strong>BG Eraser</strong> (the "Service", "we", "us", or "our"), available at this website, you agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of these terms, you must discontinue the use of our Service immediately.
+            By accessing or using <strong>Cuto BG Remover</strong> (the "Service", "we", "us", or "our"), available at this website, you agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of these terms, you must discontinue the use of our Service immediately.
           </p>
           <p>
             These Terms apply to all visitors, users, and others who access or use the Service. We reserve the right to modify or replace these Terms at any time without prior notice. Your continued use of the Service following any revisions constitutes full acceptance of those changes.
@@ -21,7 +21,7 @@ export const LEGAL_PAGES = {
         <section>
           <h3>2. Description of the Service</h3>
           <p>
-            BG Eraser provides a free, client-side, AI-assisted image background removal utility powered by WebAssembly (WASM) neural networks that execute directly in your web browser. 
+            Cuto BG Remover provides a free, client-side, AI-assisted image background removal utility powered by WebAssembly (WASM) neural networks that execute directly in your web browser. 
           </p>
           <p>
             <strong>Local Processing Architecture:</strong> Unlike traditional cloud-based SaaS editors, all computational tasks, neural inferences, canvas rendering, and pixel manipulations take place strictly on your local device hardware. We do not transmit, upload, inspect, or store your original or processed images on any remote server.
@@ -79,7 +79,7 @@ export const LEGAL_PAGES = {
         <section>
           <h3>7. Indemnification</h3>
           <p>
-            You agree to defend, indemnify, and hold harmless BG Eraser, its developers, contractors, and affiliates from and against any and all claims, damages, liabilities, costs, losses, and legal fees arising from or related to your use of the Service, your violation of these Terms, or your violation of any rights of a third party.
+            You agree to defend, indemnify, and hold harmless Cuto BG Remover, its developers, contractors, and affiliates from and against any and all claims, damages, liabilities, costs, losses, and legal fees arising from or related to your use of the Service, your violation of these Terms, or your violation of any rights of a third party.
           </p>
         </section>
 
@@ -118,14 +118,14 @@ export const LEGAL_PAGES = {
         <section>
           <h3>1. Scope of Application</h3>
           <p>
-            These General Terms and Conditions ("GTC") govern the contractual relationship between BG Eraser and any user accessing our web utility. These provisions apply uniformly to private consumers, professional freelance creators, and commercial enterprises utilizing our free utilities.
+            These General Terms and Conditions ("GTC") govern the contractual relationship between Cuto BG Remover and any user accessing our web utility. These provisions apply uniformly to private consumers, professional freelance creators, and commercial enterprises utilizing our free utilities.
           </p>
         </section>
 
         <section>
           <h3>2. Free Nature of the Platform</h3>
           <p>
-            BG Eraser is provided as a 100% free tool. We do not require paid subscriptions, mandatory memberships, credit card entries, or paywalled tokens.
+            Cuto BG Remover is provided as a 100% free tool. We do not require paid subscriptions, mandatory memberships, credit card entries, or paywalled tokens.
           </p>
           <p>
             Because we execute computations locally in your browser, our operating server infrastructure costs remain minimal. Monetization is achieved exclusively via non-intrusive contextual online advertising (such as Google AdSense) and voluntary open-source contributions.
@@ -145,14 +145,14 @@ export const LEGAL_PAGES = {
         <section>
           <h3>4. User Obligations & Data Backup</h3>
           <p>
-            You are exclusively responsible for maintaining external backups of all original source photographs. BG Eraser does not maintain a server database or recovery mechanism for lost files. Once your browser session or tab is closed, any transient canvas state or in-progress edits will be cleared from volatile device memory.
+            You are exclusively responsible for maintaining external backups of all original source photographs. Cuto BG Remover does not maintain a server database or recovery mechanism for lost files. Once your browser session or tab is closed, any transient canvas state or in-progress edits will be cleared from volatile device memory.
           </p>
         </section>
 
         <section>
           <h3>5. Intellectual Property Rights</h3>
           <p>
-            All website trademarks, service marks, user interface designs, custom CSS styling, vector animations, codebases, and documentation are the proprietary intellectual property of BG Eraser and its contributors, protected by copyright and international intellectual property laws.
+            All website trademarks, service marks, user interface designs, custom CSS styling, vector animations, codebases, and documentation are the proprietary intellectual property of Cuto BG Remover and its contributors, protected by copyright and international intellectual property laws.
           </p>
         </section>
 
@@ -183,14 +183,14 @@ export const LEGAL_PAGES = {
         <div className="legal-highlight-box">
           <h4>🔒 Core Privacy Guarantee</h4>
           <p>
-            <strong>Your images NEVER leave your device.</strong> When you drop or select a photo on BG Eraser, our AI neural model executes 100% inside your browser via client-side WebAssembly. Zero image pixels are transmitted to our servers or stored on third-party cloud disks.
+            <strong>Your images NEVER leave your device.</strong> When you drop or select a photo on Cuto BG Remover, our AI neural model executes 100% inside your browser via client-side WebAssembly. Zero image pixels are transmitted to our servers or stored on third-party cloud disks.
           </p>
         </div>
 
         <section>
           <h3>1. Introduction & Overview</h3>
           <p>
-            At BG Eraser, accessible from this website, one of our main priorities is the privacy of our visitors. This Privacy Policy document outlines the types of information that is collected and recorded by BG Eraser and how we use it, in strict accordance with the General Data Protection Regulation (GDPR), the California Consumer Privacy Act (CCPA), and global data protection standards.
+            At Cuto BG Remover, accessible from this website, one of our main priorities is the privacy of our visitors. This Privacy Policy document outlines the types of information that is collected and recorded by Cuto BG Remover and how we use it, in strict accordance with the General Data Protection Regulation (GDPR), the California Consumer Privacy Act (CCPA), and global data protection standards.
           </p>
         </section>
 
@@ -200,7 +200,7 @@ export const LEGAL_PAGES = {
             Traditional photo editors send your high-resolution images to cloud GPU datacenters where they may be inspected, logged, cached, or used to train third-party AI models. 
           </p>
           <p>
-            <strong>BG Eraser is fundamentally different:</strong> We ship an optimized ONNX neural network weights file directly to your browser memory. Processing runs on your device's CPU/GPU via WebAssembly SIMD. No image data is ever transmitted, monitored, stored, or sold.
+            <strong>Cuto BG Remover is fundamentally different:</strong> We ship an optimized ONNX neural network weights file directly to your browser memory. Processing runs on your device's CPU/GPU via WebAssembly SIMD. No image data is ever transmitted, monitored, stored, or sold.
           </p>
         </section>
 
@@ -229,17 +229,17 @@ export const LEGAL_PAGES = {
             </a>.
           </p>
           <p>
-            Third-party ad servers or ad networks use technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on BG Eraser. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.
+            Third-party ad servers or ad networks use technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on Cuto BG Remover. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.
           </p>
           <p>
-            <em>Note: BG Eraser has no access to or control over these cookies that are used by third-party advertisers.</em>
+            <em>Note: Cuto BG Remover has no access to or control over these cookies that are used by third-party advertisers.</em>
           </p>
         </section>
 
         <section>
           <h3>5. Third-Party Privacy Policies</h3>
           <p>
-            BG Eraser's Privacy Policy does not apply to other advertisers or websites. Thus, we advise you to consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options.
+            Cuto BG Remover's Privacy Policy does not apply to other advertisers or websites. Thus, we advise you to consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options.
           </p>
           <p>
             You can choose to disable cookies through your individual browser options. To know more detailed information about cookie management with specific web browsers, it can be found at the browsers' respective websites.
@@ -278,7 +278,7 @@ export const LEGAL_PAGES = {
             Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity.
           </p>
           <p>
-            BG Eraser does not knowingly collect any Personal Identifiable Information from children under the age of 13. If you think that your child provided this kind of information on our website, we strongly encourage you to contact us immediately and we will do our best efforts to promptly remove such information from our records.
+            Cuto BG Remover does not knowingly collect any Personal Identifiable Information from children under the age of 13. If you think that your child provided this kind of information on our website, we strongly encourage you to contact us immediately and we will do our best efforts to promptly remove such information from our records.
           </p>
         </section>
 
@@ -309,7 +309,7 @@ export const LEGAL_PAGES = {
 
         <section>
           <h3>2. How We Use Cookies</h3>
-          <p>BG Eraser utilizes cookies and browser local storage for the following specific purposes:</p>
+          <p>Cuto BG Remover utilizes cookies and browser local storage for the following specific purposes:</p>
           <ul>
             <li>
               <strong>Essential Preferences (Local Storage):</strong> We use HTML5 Local Storage to remember whether you selected Light Theme or Dark Theme (<code>bgeraser_theme</code>). This does not track personal identity.
@@ -410,7 +410,7 @@ export const LEGAL_PAGES = {
             This website is an independent, free open-source AI productivity utility designed and operated for public benefit.
           </p>
           <div className="legal-meta-card">
-            <p><strong>Platform Name:</strong> BG Eraser (AI In-Browser Background Remover)</p>
+            <p><strong>Platform Name:</strong> Cuto BG Remover (AI In-Browser Background Remover)</p>
             <p><strong>Primary URL:</strong> <a href="/" className="legal-ext-link">https://bgeraser.devv.in</a></p>
             <p><strong>Project Lead & Developer:</strong> Dev Sharma</p>
             <p><strong>Engineering Jurisdiction:</strong> New Delhi, India</p>
@@ -479,7 +479,7 @@ export default function LegalModal({ activeTab = "privacy", onClose, onSelectTab
         {/* Modal Top Bar */}
         <div className="legal-modal-header">
           <div className="legal-header-left">
-            <button className="btn-legal-back" onClick={onClose} title="Back to BG Eraser App">
+            <button className="btn-legal-back" onClick={onClose} title="Back to Cuto BG Remover App">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <line x1="19" y1="12" x2="5" y2="12" />
                 <polyline points="12 19 5 12 12 5" />
@@ -538,10 +538,10 @@ export default function LegalModal({ activeTab = "privacy", onClose, onSelectTab
             <div className="legal-footer-signature">
               <div className="legal-sig-badge">🛡️ Verified Compliant</div>
               <p>
-                BG Eraser adheres strictly to Google Publisher Policies, Google AdSense Webmaster Quality Guidelines, CCPA consumer rights, and European Union GDPR mandates.
+                Cuto BG Remover adheres strictly to Google Publisher Policies, Google AdSense Webmaster Quality Guidelines, CCPA consumer rights, and European Union GDPR mandates.
               </p>
               <button className="btn-legal-return" onClick={onClose}>
-                ✓ I Understand & Return to BG Eraser
+                ✓ I Understand & Return to Cuto BG Remover
               </button>
             </div>
           </div>
