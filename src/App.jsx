@@ -224,35 +224,90 @@ export default function App() {
     }
   };
 
-  // ── Process Background Removal (Reliable Multi-Threaded WASM) ──
+  // Helper to downscale ultra high-res camera photos before neural processing
+  // This prevents browser UI freezing, memory spikes, and crashes
+  const optimizeInputImage = async (file, maxDimension = 2048) => {
+    return new Promise((resolve) => {
+      if (!file || !file.type.startsWith("image/")) {
+        resolve(file);
+        return;
+      }
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        const { width, height } = img;
+        if (width <= maxDimension && height <= maxDimension) {
+          resolve(file);
+          return;
+        }
+        const scale = Math.min(maxDimension / width, maxDimension / height);
+        const newWidth = Math.round(width * scale);
+        const newHeight = Math.round(height * scale);
+
+        const canvas = document.createElement("canvas");
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              const resizedFile = new File([blob], file.name, { type: "image/png" });
+              resolve(resizedFile);
+            } else {
+              resolve(file);
+            }
+          },
+          "image/png",
+          0.95
+        );
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        resolve(file);
+      };
+      img.src = url;
+    });
+  };
+
+  // ── Process Background Removal (Fast, Quantized & Non-Blocking Worker) ──
   const runRemoval = async (fileToProcess) => {
     if (!fileToProcess) return;
     setStatus("loading");
 
-    // Dynamic, fluid progress simulation so it never hangs statically at 15%
     if (progressTimerRef.current) clearInterval(progressTimerRef.current);
-    let currentPct = 16;
+    let currentPct = 12;
     setProgress(currentPct);
-    setProgressMsg("Scanning image & detecting edges...");
+    setProgressMsg("Preparing image & detecting boundaries...");
 
+    // Smooth fluid animation that doesn't fake-jump prematurely to 89%
     progressTimerRef.current = setInterval(() => {
-      currentPct += Math.max(1, Math.floor((92 - currentPct) / 6));
-      if (currentPct >= 92) {
+      currentPct += Math.max(1, Math.floor((90 - currentPct) / 10));
+      if (currentPct >= 90) {
         clearInterval(progressTimerRef.current);
       } else {
         setProgress(currentPct);
-        if (currentPct > 65) {
-          setProgressMsg("Erasing background pixels with AI...");
-        } else if (currentPct > 35) {
-          setProgressMsg("Isolating subject boundaries...");
+        if (currentPct > 60) {
+          setProgressMsg("Erasing background pixels with AI neural engine...");
+        } else if (currentPct > 30) {
+          setProgressMsg("Isolating subject edges...");
         }
       }
-    }, 280);
+    }, 320);
 
     try {
+      // 1. Downscale oversized photos to prevent browser main-thread freeze
+      const optimizedInput = await optimizeInputImage(fileToProcess, 2048);
+
       let blob;
       try {
-        blob = await removeBackground(fileToProcess, {
+        // Fast quantized 8-bit model, WebGPU accelerated + Web Worker offloaded
+        blob = await removeBackground(optimizedInput, {
+          model: "small",
+          device: "gpu",
+          proxyToWorker: true,
           progress: (key, current, total) => {
             if (total > 0) {
               const pct = Math.round((current / total) * 100);
@@ -264,12 +319,19 @@ export default function App() {
           },
           output: {
             format: "image/png",
-            quality: 1.0,
+            quality: 0.95,
           },
         });
-      } catch (err1) {
-        console.warn("Custom config failed, running raw fallback:", err1);
-        blob = await removeBackground(fileToProcess);
+      } catch (errGpu) {
+        console.warn("GPU/worker removal fallback to CPU:", errGpu);
+        blob = await removeBackground(optimizedInput, {
+          model: "small",
+          device: "cpu",
+          output: {
+            format: "image/png",
+            quality: 0.95,
+          },
+        });
       }
 
       if (progressTimerRef.current) clearInterval(progressTimerRef.current);
@@ -328,6 +390,13 @@ export default function App() {
     e.preventDefault();
     setDragging(true);
   };
+
+  // ── Background Preload AI Model into Browser Cache ──
+  useEffect(() => {
+    try {
+      preload({ model: "small", device: "gpu" }).catch(() => {});
+    } catch (_) {}
+  }, []);
 
   // ── Global Full-Screen Drag and Drop ──
   useEffect(() => {

@@ -38,7 +38,7 @@
   --accent-mint-hover: #FFAB00;
   --accent-mint-light: rgba(255, 214, 0, 0.2);
 
-  --bg-page: #FFFDE6;          /* Warm golden sunshine canvas */
+  --bg-page: #FFFFFF;          /* Clean crisp white canvas */
   --card-bg: #FFFFFF;
   --card-border: #FFD600;      /* Vibrant sunshine yellow borders */
   --card-border-subtle: #FFF099;
@@ -119,8 +119,8 @@ html, body {
 
 html:not([data-theme="dark"]),
 body:not([data-theme="dark"]) {
-  background: radial-gradient(circle at 50% -10%, #FFFDE0 0%, #FFFCEB 55%, #FFFCE6 100%) !important;
-  background-attachment: fixed !important;
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
   color: #000000 !important;
 }
 
@@ -153,13 +153,13 @@ body[data-theme="dark"] {
   width: 100%;
   z-index: 1000;
   padding: 0;
-  background: rgba(255, 253, 235, 0.94);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 2px solid #FFD600;
+  border-bottom: 2.5px solid #FFD600;
   box-shadow:
-    0 4px 20px -2px rgba(255, 214, 0, 0.22),
-    0 1px 0 rgba(255, 171, 0, 0.4);
+    0 4px 18px -2px rgba(255, 214, 0, 0.18),
+    0 1px 0 rgba(255, 171, 0, 0.25);
   transition: all 0.25s ease;
 }
 
