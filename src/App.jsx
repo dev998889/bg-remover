@@ -17,11 +17,11 @@ const PRESET_BG_COLORS_LIGHT = [
 
 const PRESET_BG_COLORS_DARK = [
   { name: "Transparent", value: "transparent", isCheckered: true },
-  { name: "Berry Fuchsia", value: "#C02674" },
-  { name: "Deep Plum", value: "#5B253D" },
-  { name: "Moody Pine", value: "#1C4443" },
-  { name: "Charcoal Slate", value: "#273438" },
-  { name: "Obsidian Dark", value: "#101517" },
+  { name: "Carmine Red", value: "#9A0D1B" },
+  { name: "Rosewood Wine", value: "#6A040F" },
+  { name: "Chocolate Cosmos", value: "#550816" },
+  { name: "Black Bean", value: "#350616" },
+  { name: "Velvet Plum", value: "#1D0515" },
   { name: "Pure White", value: "#FFFFFF" },
 ];
 
@@ -146,6 +146,12 @@ export default function App() {
     document.documentElement.setAttribute("data-theme", theme);
     document.body.setAttribute("data-theme", theme);
     document.documentElement.style.colorScheme = theme;
+
+    // Dynamically update favicon (pure transparent circle for light and dark)
+    const faviconEl = document.querySelector("link[rel*='icon']");
+    if (faviconEl) {
+      faviconEl.href = theme === "dark" ? "/favicon_dark.png" : "/favicon.png";
+    }
   }, [theme]);
 
   const presetColors = theme === "dark" ? PRESET_BG_COLORS_DARK : PRESET_BG_COLORS_LIGHT;
@@ -700,7 +706,11 @@ export default function App() {
         <div className="header-3d">
           <div className="logo-3d" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} style={{ cursor: "pointer" }}>
             <div className="logo-img-wrap-3d">
-              <img src="/cuto_logo.png" alt="Cuto BG Remover Logo" className="logo-cuto-img" />
+              <img
+                src={theme === "dark" ? "/cuto_logo_dark.png" : "/cuto_logo.png"}
+                alt="Cuto BG Remover Logo"
+                className="logo-cuto-img"
+              />
             </div>
             <div className="logo-text">
               <h1>Cuto<span>BG</span></h1>
@@ -1681,14 +1691,14 @@ export default function App() {
               />
             </defs>
             <g className="parallax-waves">
-              {/* Wave 1: Brand Golden Yellow (#FFD600) in Light / Rich Berry Fuchsia (#C02674) in Dark */}
-              <use xlinkHref="#gentle-wave" x="48" y="0" fill={theme === "dark" ? "#C02674" : "#FFD600"} />
-              {/* Wave 2: Sunset Orange (#FF6F00) in Light / Dark Forest Pine (#1C4443) in Dark */}
-              <use xlinkHref="#gentle-wave" x="48" y="2" fill={theme === "dark" ? "#1C4443" : "#FF6F00"} />
-              {/* Wave 3: Amber Gold (#FFAB00) in Light / Deep Plum (#5B253D) in Dark */}
-              <use xlinkHref="#gentle-wave" x="48" y="4" fill={theme === "dark" ? "#5B253D" : "#FFAB00"} />
-              {/* Wave 4: Deep Carbon Black (#14171A) in Light / Deep Obsidian (#101517) in Dark */}
-              <use xlinkHref="#gentle-wave" x="48" y="7" fill={theme === "dark" ? "#101517" : "#14171A"} />
+              {/* Wave 1: Brand Golden Yellow (#FFD600) in Light / Carmine Red (#9A0D1B) in Dark */}
+              <use xlinkHref="#gentle-wave" x="48" y="0" fill={theme === "dark" ? "#9A0D1B" : "#FFD600"} />
+              {/* Wave 2: Sunset Orange (#FF6F00) in Light / Rosewood Wine (#6A040F) in Dark */}
+              <use xlinkHref="#gentle-wave" x="48" y="2" fill={theme === "dark" ? "#6A040F" : "#FF6F00"} />
+              {/* Wave 3: Amber Gold (#FFAB00) in Light / Chocolate Cosmos (#550816) in Dark */}
+              <use xlinkHref="#gentle-wave" x="48" y="4" fill={theme === "dark" ? "#550816" : "#FFAB00"} />
+              {/* Wave 4: Deep Carbon Black (#14171A) in Light / Velvet Plum (#1D0515) in Dark */}
+              <use xlinkHref="#gentle-wave" x="48" y="7" fill={theme === "dark" ? "#1D0515" : "#14171A"} />
             </g>
           </svg>
         </div>
