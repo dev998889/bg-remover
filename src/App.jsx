@@ -956,7 +956,7 @@ export default function App() {
                 href="https://github.com/dev998889/bg-remover"
                 target="_blank"
                 rel="noreferrer"
-                className="btn-github-3d"
+                className="btn-github-3d desktop-only"
                 title="Star on GitHub"
               >
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">

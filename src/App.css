@@ -3541,56 +3541,199 @@ body[data-theme="dark"] {
   box-shadow: 0 6px 18px rgba(154, 13, 27, 0.6);
 }
 
-/* ── Responsive ── */
+/* ── Responsive Mobile Engine (< 900px, < 768px, < 480px) ── */
 @media (max-width: 900px) {
+  .hero-split-section {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 24px 0 16px;
+    text-align: center;
+  }
+  .hero-left-column {
+    align-items: center;
+    text-align: center;
+  }
+  .hero-left-column h2 {
+    font-size: 32px;
+    letter-spacing: -0.6px;
+  }
+  .hero-left-column p {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+  .hero-left-column .hero-trust-bar {
+    justify-content: center;
+  }
+
   .bento-grid { grid-template-columns: 1fr; }
   .bento-card-large, .bento-card-tall { grid-column: span 1; }
   .why-free-grid { grid-template-columns: repeat(2, 1fr); }
   .testimonials-grid { grid-template-columns: 1fr; }
   .stats-strip { flex-direction: column; gap: 24px; padding: 28px 20px; }
   .stat-divider { width: 60%; height: 1px; }
-  .matrix-table-wrapper { overflow-x: auto; }
-  .matrix-table { min-width: 620px; }
+  .matrix-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .matrix-table { min-width: 580px; }
 }
 
 @media (max-width: 768px) {
+  /* 1. Ultra-Clean & Compact Navbar */
   .header-3d-wrapper { padding: 0; top: 0; }
-  .header-3d { padding: 0 16px; height: 60px; }
-  .logo-3d { gap: 10px; }
-  .logo-icon-3d { width: 38px; height: 38px; font-size: 18px; border-radius: 11px; }
-  .logo-text h1 { font-size: 17px; }
-  .logo-text p { display: none; } /* Hide sub-label on mobile for clean breathing room */
+  .header-3d { padding: 0 14px; height: 50px; }
+  .logo-3d { gap: 8px; }
+  .logo-img-wrap-3d { width: 32px; height: 32px; }
+  .logo-text h1 { font-size: 16px; letter-spacing: -0.3px; }
+  .logo-text p { display: none !important; } /* Hide sub-label on mobile */
 
-  .desktop-only { display: none !important; }
+  .desktop-only { display: none !important; } /* Hides desktop nav links, developer GitHub button, & excess pills */
+  
+  .nav-badges-group { gap: 6px; }
   .badge-free {
     display: inline-flex !important;
-    padding: 5px 10px;
-    font-size: 11px;
+    padding: 4px 8px;
+    font-size: 10px;
+    font-weight: 800;
   }
-  .nav-badges-group { gap: 8px; }
-  .btn-github-3d { padding: 6px 12px; font-size: 12px; }
+  .btn-theme-toggle-3d {
+    padding: 4px 9px;
+    font-size: 11px;
+    border-radius: 9999px;
+  }
+  .theme-toggle-text { display: none; } /* Only show sun/moon icon on mobile for maximum cleanliness */
 
-  .main { padding: 24px 16px 40px; }
-  .hero h2 { font-size: 28px; }
-  .why-free-grid { grid-template-columns: 1fr; }
-  .section-title { font-size: 26px; }
-  .cta-content h2 { font-size: 26px; }
-  .cta-banner { padding: 40px 20px; }
-  .upload-zone { padding: 40px 16px; }
-  .compare-slider, .single-view { height: 380px; }
-  .showcase-slider-area { height: 360px; }
-  .wave-wrapper { height: 75px; }
-  .footer-content { padding: 24px 20px 32px; }
-  .footer-top-row { flex-direction: column; align-items: flex-start; gap: 16px; }
-  .footer-bottom-row { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .footer-links { gap: 14px; }
+  /* Compact wave height under navbar */
+  .nav-wave-wrapper { height: 20px; }
+
+  /* 2. Compact Main Body */
+  .main { padding: 12px 14px 32px; }
+  .hero-pill-badge { font-size: 11px; padding: 5px 12px; margin-bottom: 12px; }
+  .hero-left-column h2 { font-size: 25px; line-height: 1.22; margin-bottom: 10px; }
+  .hero-left-column p { font-size: 13px; line-height: 1.5; margin-bottom: 16px; }
+  
+  /* Trust Bar - Compact horizontal scroll or wrap */
+  .hero-trust-bar { gap: 6px; justify-content: center; }
+  .trust-item { font-size: 11px; padding: 4px 8px; }
+
+  /* 3. Compact Thumb-Friendly Upload Zone */
+  .upload-zone {
+    padding: 24px 14px;
+    min-height: 220px;
+    border-radius: 16px;
+    border-width: 2px;
+  }
+  .upload-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 12px;
+  }
+  .upload-icon-wrapper svg { width: 24px; height: 24px; }
+  .upload-prompt h3 { font-size: 16px; margin-bottom: 4px; }
+  .upload-prompt p { font-size: 12px; margin-bottom: 14px; }
+  .btn-upload {
+    padding: 10px 20px;
+    font-size: 13px;
+    width: 100%;
+    max-width: 250px;
+  }
+  .upload-limits { font-size: 11px; margin-top: 10px; }
+
+  /* Samples Row - Horizontal Scroll without page stretch */
+  .sample-selector { margin-top: 16px; }
+  .sample-prompt { font-size: 11px; margin-bottom: 6px; }
+  .sample-pills {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .sample-pills::-webkit-scrollbar { display: none; }
+  .sample-pill { flex-shrink: 0; font-size: 11px; padding: 4px 10px; }
+
+  /* 4. Processed Workspace & Compare Slider on Mobile */
+  .canvas-card {
+    min-height: 280px;
+    border-radius: 14px;
+  }
+  .compare-slider, .single-view {
+    height: 310px; /* Highly optimized mobile viewport height */
+  }
+  .slider-handle {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Color Palette Swatches */
+  .color-palette-bar {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    padding: 8px 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .color-palette-bar::-webkit-scrollbar { display: none; }
+  .color-swatch { width: 26px; height: 26px; flex-shrink: 0; }
+
+  /* Mobile Action Bar - Clean 2-Row Thumb Grid */
+  .result-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+  .result-actions .btn-download {
+    width: 100%;
+    justify-content: center;
+    padding: 13px 20px;
+    font-size: 14px;
+    order: -1; /* Download button always on top for fast 1-tap download */
+  }
+  .result-actions .btn-new-image,
+  .result-actions .btn-secondary,
+  .result-actions .btn-copy-png {
+    flex: 1;
+    padding: 9px 10px;
+    font-size: 12px;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  /* 5. Content Sections Below */
+  .section-title { font-size: 22px; margin-bottom: 6px; }
+  .section-subtitle { font-size: 13px; margin-bottom: 24px; line-height: 1.5; }
+  .bento-section { padding: 32px 0 16px; }
+  .bento-card { padding: 18px 14px; border-radius: 16px; }
+  .why-free-section { padding: 32px 0 16px; }
+  .why-free-grid { grid-template-columns: 1fr; gap: 14px; }
+  .why-free-card { padding: 18px 14px; }
+  
+  .compare-section { padding: 32px 0 16px; }
+  .testimonials-section { padding: 32px 0 16px; }
+  .faq-section { padding: 32px 0 16px; }
+  .faq-item { padding: 14px 16px; border-radius: 12px; }
+  .faq-question h4 { font-size: 14px; }
+  .faq-answer { font-size: 13px; line-height: 1.5; }
+
+  /* 6. Footer on Mobile */
+  .wave-footer { margin-top: 32px; }
+  .wave-wrapper { height: 50px; }
+  .footer-content { padding: 20px 14px 28px; gap: 18px; }
+  .footer-top-row { flex-direction: column; align-items: center; gap: 14px; }
+  .footer-socials { justify-content: center; gap: 12px; }
+  .footer-bottom-row { flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+  .footer-links { justify-content: center; gap: 10px 14px; font-size: 11px; }
+  .footer-copyright { text-align: center; font-size: 11px; }
 }
 
 @media (max-width: 480px) {
-  .btn-github-text { display: none; }
-  .btn-github-3d { padding: 8px 10px; }
-  .hero-trust-bar { gap: 8px; }
-  .trust-item { font-size: 11px; padding: 4px 10px; }
+  .hero-left-column h2 { font-size: 22px; }
+  .hero-pill-badge { font-size: 10px; padding: 4px 10px; }
+  /* Hide the 4th and 5th trust badges on ultra-small screens so upload zone is immediate */
+  .hero-trust-bar .trust-item:nth-child(n+4) { display: none; }
+  
+  .compare-slider, .single-view { height: 280px; }
+  .showcase-slider-area { height: 240px; }
 }
 
 /* ── 8. Google AdSense Compliant Legal Pages & Policy Reader ── */
