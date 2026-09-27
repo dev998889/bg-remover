@@ -541,35 +541,35 @@ export default function App() {
 
               <div className="bento-grid">
                 {/* Bento Card 1: E-Commerce Footwear */}
-                <div className="bento-card bento-card-large">
+                <div className="bento-card">
                   <div className="bento-card-header">
                     <span className="bento-tag tag-coral">E-Commerce & Amazon</span>
                     <h3>Studio Product Staging</h3>
                     <p>Clean crisp outlines for footwear, apparel, and gadgets. Eliminate uneven studio lighting and drop products directly onto marketplace white or custom campaign colors.</p>
                   </div>
-                  <div className="bento-visual visual-shoe">
+                  <div className="bento-visual">
                     <div className="bento-img-bg checkerboard">
-                      <img src="/samples/sample_sneaker.png" alt="Sneaker Cutout" className="bento-img" />
-                    </div>
-                    <div className="bento-floating-pill pill-coral">
-                      <span>✓ 100% Marketplace Compliant</span>
+                      <img src="/samples/sample_sneaker.png" alt="Sneaker Cutout" className="bento-img img-sneaker" />
+                      <div className="bento-floating-pill pill-coral">
+                        <span>✓ 100% Marketplace Compliant</span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Bento Card 2: Fur & Hair Matting */}
-                <div className="bento-card bento-card-tall">
+                <div className="bento-card">
                   <div className="bento-card-header">
                     <span className="bento-tag tag-mint">Micro Matting</span>
                     <h3>Animals & Fine Hair</h3>
                     <p>Sub-pixel alpha masking preserves wispy whiskers, fluffy fur, and fine human hair strands without harsh jagged borders or color bleed.</p>
                   </div>
-                  <div className="bento-visual visual-pet">
+                  <div className="bento-visual">
                     <div className="bento-img-bg bento-bg-mint">
-                      <img src="/samples/sample_dog.png" alt="Dog Cutout" className="bento-img" />
-                    </div>
-                    <div className="bento-floating-pill pill-mint">
-                      <span>🐾 Zero Whisker Loss</span>
+                      <img src="/samples/sample_dog.png" alt="Dog Cutout" className="bento-img img-dog" />
+                      <div className="bento-floating-pill pill-mint">
+                        <span>🐾 Zero Whisker Loss</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -579,11 +579,14 @@ export default function App() {
                   <div className="bento-card-header">
                     <span className="bento-tag tag-silver">Micro Precision</span>
                     <h3>Jewelry & Reflections</h3>
-                    <p>Intelligently handles specular highlights and metallic shine without chewing into the product frame.</p>
+                    <p>Intelligently handles specular highlights and metallic shine without chewing into delicate glass, bezels, or the product frame.</p>
                   </div>
-                  <div className="bento-visual visual-compact">
+                  <div className="bento-visual">
                     <div className="bento-img-bg checkerboard">
-                      <img src="/samples/sample_watch.png" alt="Watch Cutout" className="bento-img" />
+                      <img src="/samples/sample_watch.png" alt="Watch Cutout" className="bento-img img-watch" />
+                      <div className="bento-floating-pill pill-silver">
+                        <span>💎 Specular Matting</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -593,11 +596,14 @@ export default function App() {
                   <div className="bento-card-header">
                     <span className="bento-tag tag-carbon">Complex Geometry</span>
                     <h3>Tech Hardware & Cords</h3>
-                    <p>Crisply carves out mesh headbands, delicate cables, and perforated metal grills with clean hollows.</p>
+                    <p>Crisply carves out mesh headbands, delicate cables, and perforated metal grills with clean hollows and zero color artifacts.</p>
                   </div>
-                  <div className="bento-visual visual-compact">
+                  <div className="bento-visual">
                     <div className="bento-img-bg bento-bg-coral">
-                      <img src="/samples/sample_headphones.png" alt="Headphones Cutout" className="bento-img" />
+                      <img src="/samples/sample_headphones.png" alt="Headphones Cutout" className="bento-img img-headphones" />
+                      <div className="bento-floating-pill pill-carbon">
+                        <span>🎧 Hollow Grid Matting</span>
+                      </div>
                     </div>
                   </div>
                 </div>
