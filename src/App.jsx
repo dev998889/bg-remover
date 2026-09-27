@@ -2,7 +2,8 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { removeBackground, preload } from "@imgly/background-removal";
 import "./App.css";
 
-const PRESET_BG_COLORS = [
+// ── Light & Dark Theme Color Presets (Moody Botanical Palette from user design) ──
+const PRESET_BG_COLORS_LIGHT = [
   { name: "Transparent", value: "transparent", isCheckered: true },
   { name: "Electric Coral", value: "#FF4D4D" },
   { name: "Neon Mint", value: "#4DFFBC" },
@@ -10,6 +11,16 @@ const PRESET_BG_COLORS = [
   { name: "Silver White", value: "#D9D9D9" },
   { name: "Pure White", value: "#FFFFFF" },
   { name: "Carbon Black", value: "#181A1D" },
+];
+
+const PRESET_BG_COLORS_DARK = [
+  { name: "Transparent", value: "transparent", isCheckered: true },
+  { name: "Berry Fuchsia", value: "#C02674" },
+  { name: "Deep Plum", value: "#5B253D" },
+  { name: "Moody Pine", value: "#1C4443" },
+  { name: "Charcoal Slate", value: "#273438" },
+  { name: "Obsidian Dark", value: "#101517" },
+  { name: "Pure White", value: "#FFFFFF" },
 ];
 
 const SHOWCASE_CATEGORIES = [
@@ -90,6 +101,19 @@ export default function App() {
   const [canRedo, setCanRedo] = useState(false);
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0, displaySize: 24, visible: false });
   const [copyFeedback, setCopyFeedback] = useState("");
+
+  // ── Theme State (Defaulting to Dark Theme from user's moody botanical palette) ──
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("bgeraser_theme") || "dark";
+  });
+
+  const toggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    setTheme(nextTheme);
+    localStorage.setItem("bgeraser_theme", nextTheme);
+  };
+
+  const presetColors = theme === "dark" ? PRESET_BG_COLORS_DARK : PRESET_BG_COLORS_LIGHT;
 
   const touchUpCanvasRef = useRef(null);
   const originalImgRef = useRef(null);
@@ -635,7 +659,7 @@ export default function App() {
   };
 
   return (
-    <div className="app">
+    <div className="app" data-theme={theme}>
       {/* ── 3D Modern Navbar ── */}
       <header className="header-3d-wrapper">
         <div className="header-3d">
@@ -651,6 +675,17 @@ export default function App() {
           </div>
 
           <div className="nav-badges-group">
+            {/* 3D Tactile Theme Switcher Button */}
+            <button
+              className="btn-theme-toggle-3d"
+              onClick={toggleTheme}
+              title={`Switch to ${theme === "dark" ? "Light" : "Dark"} theme`}
+              aria-label="Toggle dark/light theme"
+            >
+              <span className="theme-toggle-icon">{theme === "dark" ? "☀️" : "🌙"}</span>
+              <span className="theme-toggle-text">{theme === "dark" ? "Light" : "Dark"}</span>
+            </button>
+
             <div className="nav-pill-badge badge-free">
               <span className="badge-dot" />
               <span>100% Free</span>
@@ -982,7 +1017,7 @@ export default function App() {
               <div className="color-palette-bar">
                 <span className="palette-label">Backdrop:</span>
                 <div className="palette-options">
-                  {PRESET_BG_COLORS.map((c) => (
+                  {presetColors.map((c) => (
                     <button
                       key={c.name}
                       title={c.name}
@@ -1621,14 +1656,14 @@ export default function App() {
               />
             </defs>
             <g className="parallax-waves">
-              {/* Wave 1: Solid Electric Coral Red (#FF4D4D) - Constant color */}
-              <use xlinkHref="#gentle-wave" x="48" y="0" fill="#FF4D4D" />
-              {/* Wave 2: Solid Neon Mint (#4DFFBC) - Constant color */}
-              <use xlinkHref="#gentle-wave" x="48" y="2" fill="#4DFFBC" />
-              {/* Wave 3: Solid Slate Gray (#898989) - Constant color */}
-              <use xlinkHref="#gentle-wave" x="48" y="4" fill="#898989" />
-              {/* Wave 4: Solid Deep Carbon (#181A1D) - Seamless footer base */}
-              <use xlinkHref="#gentle-wave" x="48" y="7" fill="#181A1D" />
+              {/* Wave 1: Coral in Light / Rich Berry Fuchsia (#C02674) in Dark */}
+              <use xlinkHref="#gentle-wave" x="48" y="0" fill={theme === "dark" ? "#C02674" : "#FF4D4D"} />
+              {/* Wave 2: Mint in Light / Dark Forest Pine (#1C4443) in Dark */}
+              <use xlinkHref="#gentle-wave" x="48" y="2" fill={theme === "dark" ? "#1C4443" : "#4DFFBC"} />
+              {/* Wave 3: Slate in Light / Deep Plum (#5B253D) in Dark */}
+              <use xlinkHref="#gentle-wave" x="48" y="4" fill={theme === "dark" ? "#5B253D" : "#898989"} />
+              {/* Wave 4: Deep Carbon in Light / Deep Obsidian (#101517) in Dark */}
+              <use xlinkHref="#gentle-wave" x="48" y="7" fill={theme === "dark" ? "#101517" : "#181A1D"} />
             </g>
           </svg>
         </div>
