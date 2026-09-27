@@ -2779,7 +2779,7 @@ body[data-theme="dark"] {
 }
 
 .footer-copyright {
-  color: var(--c-slate);
+  color: rgba(255, 255, 255, 0.75);
   font-size: 13px;
   font-weight: 500;
 }
@@ -2792,15 +2792,17 @@ body[data-theme="dark"] {
 }
 
 .footer-links a {
-  color: var(--c-silver);
+  color: #FFFFFF;
   text-decoration: none;
   font-size: 12px;
   font-weight: 500;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
+  opacity: 0.85;
 }
 
 .footer-links a:hover {
-  color: var(--c-mint);
+  opacity: 1;
+  color: #FFFFFF;
   text-decoration: underline;
 }
 
@@ -3321,6 +3323,28 @@ body[data-theme="dark"] {
 
 [data-theme="dark"] .footer-content {
   background-color: #1D0515 !important;
+  border-top: 1px solid #550816;
+}
+
+[data-theme="dark"] .footer-copyright {
+  color: #FFFFFF !important;
+  opacity: 0.85;
+}
+
+[data-theme="dark"] .footer-copyright span {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .footer-links a {
+  color: #FFFFFF !important;
+  opacity: 0.9;
+}
+
+[data-theme="dark"] .footer-links a:hover {
+  color: #FFFFFF !important;
+  opacity: 1;
+  text-decoration: underline;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 [data-theme="dark"] .footer-lang-pill {
