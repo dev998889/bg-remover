@@ -1593,7 +1593,7 @@ export default function App() {
                   </div>
                   <div className="bento-visual">
                     <div className="bento-img-bg checkerboard">
-                      <img src="/samples/sample_sneaker.png" alt="Sneaker Cutout" className="bento-img img-sneaker" />
+                      <img src="/samples/sample_sneaker.png" alt="Sneaker Product Photo Transparent PNG - Free E-Commerce Background Remover" className="bento-img img-sneaker" />
                       <div className="bento-floating-pill pill-coral">
                         <span>✓ 100% Marketplace Compliant</span>
                       </div>
@@ -1610,7 +1610,7 @@ export default function App() {
                   </div>
                   <div className="bento-visual">
                     <div className="bento-img-bg bento-bg-mint">
-                      <img src="/samples/sample_dog.png" alt="Dog Cutout" className="bento-img img-dog" />
+                      <img src="/samples/sample_dog.png" alt="Dog Pet Photo Hair and Fur Cutout - Free AI Background Eraser" className="bento-img img-dog" />
                       <div className="bento-floating-pill pill-mint">
                         <span>🐾 Zero Whisker Loss</span>
                       </div>
@@ -1627,7 +1627,7 @@ export default function App() {
                   </div>
                   <div className="bento-visual">
                     <div className="bento-img-bg checkerboard">
-                      <img src="/samples/sample_watch.png" alt="Watch Cutout" className="bento-img img-watch" />
+                      <img src="/samples/sample_watch.png" alt="Luxury Watch Isolated Specular Matting - Transparent Background Maker" className="bento-img img-watch" />
                       <div className="bento-floating-pill pill-silver">
                         <span>💎 Specular Matting</span>
                       </div>
@@ -1644,7 +1644,7 @@ export default function App() {
                   </div>
                   <div className="bento-visual">
                     <div className="bento-img-bg bento-bg-coral">
-                      <img src="/samples/sample_headphones.png" alt="Headphones Cutout" className="bento-img img-headphones" />
+                      <img src="/samples/sample_headphones.png" alt="Headphones Tech Hardware Cutout - Online Background Removal Tool" className="bento-img img-headphones" />
                       <div className="bento-floating-pill pill-carbon">
                         <span>🎧 Hollow Grid Matting</span>
                       </div>
