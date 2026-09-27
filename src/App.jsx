@@ -483,28 +483,43 @@ export default function App() {
                 id="gentle-wave"
                 d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
               />
+              {/* Wave 1: Glowing Neon Aqua / Electric Cyan (Top-most) */}
               <linearGradient id="wave1" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#38BDF8" stopOpacity="0.75" />
-                <stop offset="100%" stopColor="#818CF8" stopOpacity="0.75" />
+                <stop offset="0%" stopColor="#00F5D4" stopOpacity="0.9" />
+                <stop offset="50%" stopColor="#00BBF9" stopOpacity="0.9" />
+                <stop offset="100%" stopColor="#38BDF8" stopOpacity="0.9" />
               </linearGradient>
+
+              {/* Wave 2: Hot Coral Sunset / Neon Magenta */}
               <linearGradient id="wave2" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#6366F1" stopOpacity="0.8" />
-                <stop offset="100%" stopColor="#A855F7" stopOpacity="0.8" />
+                <stop offset="0%" stopColor="#FF3366" stopOpacity="0.85" />
+                <stop offset="50%" stopColor="#FF007A" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#D946EF" stopOpacity="0.85" />
               </linearGradient>
+
+              {/* Wave 3: Electric Violet & Royal Purple */}
               <linearGradient id="wave3" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#EC4899" stopOpacity="0.75" />
-                <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.75" />
+                <stop offset="0%" stopColor="#8B5CF6" stopOpacity="0.85" />
+                <stop offset="50%" stopColor="#7C3AED" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#6366F1" stopOpacity="0.85" />
+              </linearGradient>
+
+              {/* Wave 4: Deep Royal Indigo crest transitioning into Slate base (never dark at the top!) */}
+              <linearGradient id="wave4" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#4F46E5" />
+                <stop offset="40%" stopColor="#312E81" />
+                <stop offset="100%" stopColor="#1E293B" />
               </linearGradient>
             </defs>
             <g className="parallax-waves">
-              {/* Wave 1: Sky / Cyan to Indigo */}
+              {/* Wave 1: Neon Cyan */}
               <use xlinkHref="#gentle-wave" x="48" y="0" fill="url(#wave1)" />
-              {/* Wave 2: Indigo to Purple */}
+              {/* Wave 2: Hot Magenta / Coral */}
               <use xlinkHref="#gentle-wave" x="48" y="2" fill="url(#wave2)" />
-              {/* Wave 3: Pink to Violet */}
+              {/* Wave 3: Electric Violet */}
               <use xlinkHref="#gentle-wave" x="48" y="4" fill="url(#wave3)" />
-              {/* Wave 4: Deep Slate Base */}
-              <use xlinkHref="#gentle-wave" x="48" y="6" fill="#1E293B" />
+              {/* Wave 4: Royal Indigo to Slate Base */}
+              <use xlinkHref="#gentle-wave" x="48" y="7" fill="url(#wave4)" />
             </g>
           </svg>
         </div>
