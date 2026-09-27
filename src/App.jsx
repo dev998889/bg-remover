@@ -885,10 +885,46 @@ export default function App() {
 
           {/* Main Navigation Links */}
           <nav className="header-nav-links desktop-only">
-            <a href="#examples" onClick={(e) => { e.preventDefault(); document.getElementById("examples")?.scrollIntoView({ behavior: "smooth" }); }}>Showcase</a>
-            <a href="#features" onClick={(e) => { e.preventDefault(); document.getElementById("features")?.scrollIntoView({ behavior: "smooth" }); }}>Features</a>
-            <a href="#why-free" onClick={(e) => { e.preventDefault(); document.getElementById("why-free")?.scrollIntoView({ behavior: "smooth" }); }}>Why Free?</a>
-            <a href="#faq" onClick={(e) => { e.preventDefault(); document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" }); }}>FAQ</a>
+            <a
+              href="#examples"
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.getElementById("examples");
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+            >
+              Showcase
+            </a>
+            <a
+              href="#features"
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.getElementById("features");
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+            >
+              Features
+            </a>
+            <a
+              href="#why-free"
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.getElementById("why-free");
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+            >
+              Why Free?
+            </a>
+            <a
+              href="#faq"
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.getElementById("faq");
+                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+            >
+              FAQ
+            </a>
           </nav>
 
           <div className="nav-badges-group">
@@ -1515,7 +1551,7 @@ export default function App() {
             </section>
 
             {/* ── 2. Bento Grid: Precision Across Every Subject (Unique 2026 Design) ── */}
-            <section className="bento-section">
+            <section className="bento-section" id="features">
               <div className="section-header-tag">
                 <span className="tag-dot" />
                 <span>Next-Gen Edge Intelligence</span>
@@ -1597,7 +1633,7 @@ export default function App() {
             </section>
 
             {/* ── 3. Why Is This 100% Free Section (Authentic Technical Context) ── */}
-            <section className="why-free-section">
+            <section className="why-free-section" id="why-free">
               <div className="section-header-tag">
                 <span className="tag-dot" />
                 <span>Honest Transparency</span>
@@ -1807,7 +1843,7 @@ export default function App() {
             </section>
 
             {/* ── 6. Interactive FAQ Accordion ── */}
-            <section className="faq-section">
+            <section className="faq-section" id="faq">
               <div className="section-header-tag">
                 <span className="tag-dot" />
                 <span>Clear Answers</span>

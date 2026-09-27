@@ -6,6 +6,10 @@
   padding: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 :root {
   /* ── User's Black & Yellow Brand Palette (from Logo & Reference Image) ──
      1. #FFDA00 (Electric Lemon Yellow)
@@ -243,6 +247,20 @@ body[data-theme="dark"] {
 
 [data-theme="dark"] .header-nav-links a::after {
   background: #FF4D6D;
+}
+
+/* Ensure smooth section scrolling without navbar collision */
+#examples,
+#features,
+#why-free,
+#faq,
+.showcase-section,
+.bento-section,
+.why-free-section,
+.compare-section,
+.testimonials-section,
+.faq-section {
+  scroll-margin-top: 96px;
 }
 
 
