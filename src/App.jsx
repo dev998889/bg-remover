@@ -309,18 +309,18 @@ export default function App() {
             </div>
             <div className="logo-text">
               <h1>BG<span>Eraser</span></h1>
-              <p>AI Background Remover</p>
+              <p>100% Free AI Background Remover</p>
             </div>
           </div>
 
           <div className="nav-badges-group">
-            <div className="nav-pill-badge badge-privacy">
-              <span className="pill-icon">🛡️</span>
-              <span>100% Private</span>
-            </div>
             <div className="nav-pill-badge badge-free">
               <span className="badge-dot" />
-              <span>Free · In-Browser</span>
+              <span>100% Free · Unlimited</span>
+            </div>
+            <div className="nav-pill-badge badge-privacy">
+              <span className="pill-icon">🛡️</span>
+              <span>100% Private (No Cloud)</span>
             </div>
             <a
               href="https://github.com/dev998889/bg-remover"
@@ -343,8 +343,12 @@ export default function App() {
         {!original && (
           <>
             <div className="hero">
-              <h2>Remove Background <span>In 1 Click</span></h2>
-              <p>State-of-the-art AI runs directly in your browser. Complete privacy — your photos never leave your device.</p>
+              <div className="hero-pill-badge">
+                <span className="badge-sparkle">🎉</span>
+                <span>100% Free Online Background Remover · No Sign-Up</span>
+              </div>
+              <h2>Erase Image Backgrounds <span>Instantly & 100% Free</span></h2>
+              <p>Cutting-edge in-browser AI removes backgrounds in seconds with sub-pixel precision. Zero watermarks, no login, unlimited exports, and your photos never leave your device.</p>
             </div>
 
             <div
@@ -368,13 +372,32 @@ export default function App() {
                   <line x1="12" y1="3" x2="12" y2="15"/>
                 </svg>
               </div>
-              <h3>Drag & Drop Image Here</h3>
-              <p>or <strong>click to browse</strong> from your computer</p>
+              <h3>Drop Your Image Here — It's 100% Free</h3>
+              <p>or <strong>click to browse files</strong> · Instant automatic cutout</p>
               <div className="format-pills">
                 {["PNG", "JPG", "WEBP", "AVIF", "HEIC"].map((f) => (
                   <span key={f}>{f}</span>
                 ))}
               </div>
+            </div>
+
+            {/* Trust Highlights Row */}
+            <div className="hero-trust-bar">
+              <span className="trust-item">
+                <span className="trust-check">✓</span> 100% Free Forever
+              </span>
+              <span className="trust-item">
+                <span className="trust-check">✓</span> No Sign-Up Required
+              </span>
+              <span className="trust-item">
+                <span className="trust-check">✓</span> Zero Watermarks
+              </span>
+              <span className="trust-item">
+                <span className="trust-check">✓</span> Full Original HD
+              </span>
+              <span className="trust-item">
+                <span className="trust-check">✓</span> 100% Private (Runs locally)
+              </span>
             </div>
 
             {/* ── Running Example Section ("What is Background Remover used for?") ── */}
@@ -581,7 +604,45 @@ export default function App() {
               </div>
             </section>
 
-            {/* ── 3. The Architecture Advantage: In-Browser vs Cloud Comparison ── */}
+            {/* ── 3. Why Is This 100% Free Section (Authentic Technical Context) ── */}
+            <section className="why-free-section">
+              <div className="section-header-tag">
+                <span className="tag-dot" />
+                <span>Honest Transparency</span>
+              </div>
+              <h2 className="section-title">How Is This <span>100% Free With Zero Limits?</span></h2>
+              <p className="section-subtitle">
+                Most websites let you remove 1 background, and then trap you with mandatory subscriptions or paywalls. Here is the honest technical reason why BG Eraser is completely free.
+              </p>
+
+              <div className="why-free-grid">
+                <div className="why-free-card">
+                  <div className="why-free-icon icon-coral">💻</div>
+                  <h3>Powered By Your Own Hardware</h3>
+                  <p>Old-school tools send your photos to expensive cloud GPU servers, which costs them money for every single upload. BG Eraser runs the AI neural network directly in your browser using WebAssembly. Your device executes the model locally, so our server costs are nearly zero.</p>
+                </div>
+
+                <div className="why-free-card">
+                  <div className="why-free-icon icon-mint">🚫</div>
+                  <h3>No Sign-Up & No Email Traps</h3>
+                  <p>You never have to sign up, log in, or give your email address. Just open the page, drag your picture in, and download the finished PNG. We don't store your personal data or send marketing emails.</p>
+                </div>
+
+                <div className="why-free-card">
+                  <div className="why-free-icon icon-slate">💎</div>
+                  <h3>Full Original Resolution (No Blur)</h3>
+                  <p>Other tools purposely downscale free cutouts to 0.25 megapixels and demand $0.90 to unlock HD. BG Eraser exports uncompressed PNG files at your photo's full native resolution, up to 4K.</p>
+                </div>
+
+                <div className="why-free-card">
+                  <div className="why-free-icon icon-carbon">♾️</div>
+                  <h3>Truly Unlimited Everyday Usage</h3>
+                  <p>Process 1 image or 1,000 photos for your e-commerce inventory, graphic design projects, or family albums. There are no credits, daily quotas, or countdown timers.</p>
+                </div>
+              </div>
+            </section>
+
+            {/* ── 4. The Architecture Advantage: In-Browser vs Cloud Comparison ── */}
             <section className="compare-section">
               <div className="section-header-tag">
                 <span className="tag-dot" />
