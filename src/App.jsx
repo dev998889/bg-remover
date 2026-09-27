@@ -882,6 +882,14 @@ export default function App() {
             </div>
           </div>
 
+          {/* Main Navigation Links */}
+          <nav className="header-nav-links desktop-only">
+            <a href="#examples" onClick={(e) => { e.preventDefault(); document.getElementById("examples")?.scrollIntoView({ behavior: "smooth" }); }}>Showcase</a>
+            <a href="#features" onClick={(e) => { e.preventDefault(); document.getElementById("features")?.scrollIntoView({ behavior: "smooth" }); }}>Features</a>
+            <a href="#why-free" onClick={(e) => { e.preventDefault(); document.getElementById("why-free")?.scrollIntoView({ behavior: "smooth" }); }}>Why Free?</a>
+            <a href="#faq" onClick={(e) => { e.preventDefault(); document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" }); }}>FAQ</a>
+          </nav>
+
           <div className="nav-badges-group">
             {/* 3D Tactile Theme Switcher Button */}
             <button
@@ -901,6 +909,10 @@ export default function App() {
             <div className="nav-pill-badge badge-privacy desktop-only">
               <span className="pill-icon">🛡️</span>
               <span>100% Private</span>
+            </div>
+            <div className="nav-pill-badge badge-engine desktop-only" title="High-Speed Local Web Worker Engine">
+              <span className="pill-icon">⚡</span>
+              <span>Local AI</span>
             </div>
             <a
               href="https://github.com/dev998889/bg-remover"
@@ -1333,7 +1345,14 @@ export default function App() {
 
               {status === "done" && (
                 <div className="result-actions">
-                  <button className="btn-secondary" onClick={processImage}>
+                  <button className="btn-new-image" onClick={resetAll} title="Upload or drop a new image">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                      <line x1="12" y1="5" x2="12" y2="19"/>
+                      <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    New Image
+                  </button>
+                  <button className="btn-secondary" onClick={processImage} title="Re-run background removal">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
                     </svg>
@@ -1342,7 +1361,7 @@ export default function App() {
                   <button
                     className="btn-copy-clipboard"
                     onClick={copyToClipboard}
-                    title="Directly copy transparent PNG to clipboard"
+                    title="Directly copy transparent PNG to clipboard (Paste with Ctrl+V into Photoshop, Canva, WhatsApp)"
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                       <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
@@ -1365,7 +1384,7 @@ export default function App() {
         )}
 
             {/* ── Running Example Section ("What is Background Remover used for?") ── */}
-            <section className="showcase-section">
+            <section className="showcase-section" id="examples">
               <div className="showcase-header">
                 <h2>What is Background Remover <span>used for?</span></h2>
                 <p>Drag the interactive slider to see professional edge removal across different industries</p>
@@ -1892,16 +1911,6 @@ export default function App() {
         {/* Footer Content */}
         <div className="footer-content">
           <div className="footer-top-row">
-            {/* Language Selector */}
-            <div className="footer-lang-pill">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="2" y1="12" x2="22" y2="12" />
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-              </svg>
-              <span>English</span>
-            </div>
-
             {/* Social Circle Icons */}
             <div className="footer-socials">
               {/* Facebook */}
