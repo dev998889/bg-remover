@@ -14,6 +14,59 @@ const PRESET_BG_COLORS = [
   { name: "Deep Charcoal", value: "#2C3E44" },
 ];
 
+const SHOWCASE_CATEGORIES = [
+  {
+    id: "ecommerce",
+    label: "e-Commerce",
+    title: "Bring your products into focus with professional looking photos",
+    desc: "Remove other products, tags, labels, watermarks and other distractions in your product photos.",
+    image: "/samples/sample_headphones.png",
+    filename: "sample_headphones.png",
+    bgBackdrop: "#DEC484", // Calico Warm Sand
+    badge: "Audio Gear",
+  },
+  {
+    id: "fashion",
+    label: "Fashion",
+    title: "Showcase apparel and footwear on clean transparent backdrops",
+    desc: "Create crisp Amazon, Shopify, and Instagram product listings with high-contrast outlines.",
+    image: "/samples/sample_sneaker.png",
+    filename: "sample_sneaker.png",
+    bgBackdrop: "#E1A36F", // Harvest Gold
+    badge: "Footwear",
+  },
+  {
+    id: "auto",
+    label: "Auto Listings",
+    title: "Make vehicle listings pop on digital showrooms & classifieds",
+    desc: "Replace busy dealership lots and distracting street backgrounds with sleek studio staging.",
+    image: "/samples/sample_porsche.png",
+    filename: "sample_porsche.png",
+    bgBackdrop: "#577E89", // Smalt Blue
+    badge: "Vehicles",
+  },
+  {
+    id: "animals",
+    label: "Animals",
+    title: "Clean cutouts of pets, fur, and wildlife without harsh halos",
+    desc: "Advanced edge matting accurately captures fine whiskers, fur textures, and animal contours.",
+    image: "/samples/sample_dog.png",
+    filename: "sample_dog.png",
+    bgBackdrop: "#6F9F9C", // Sea Nymph Teal
+    badge: "Pets & Wildlife",
+  },
+  {
+    id: "jewellery",
+    label: "Jewellery",
+    title: "Sparkling gems and fine metals isolated with microscopic clarity",
+    desc: "Eliminate reflection artifacts and uneven backdrops to highlight the craftsmanship of luxury jewels.",
+    image: "/samples/sample_watch.png",
+    filename: "sample_watch.png",
+    bgBackdrop: "#E2D8A5", // Hampton Linen
+    badge: "Luxury Watches",
+  },
+];
+
 export default function App() {
   const [original, setOriginal] = useState(null);       // { url, file, name }
   const [result, setResult] = useState(null);            // blob URL
@@ -29,6 +82,57 @@ export default function App() {
   const fileInputRef = useRef(null);
   const compareRef = useRef(null);
   const isDraggingSlider = useRef(false);
+
+  // ── Running Example Showcase State ──
+  const [activeShowcaseId, setActiveShowcaseId] = useState("ecommerce");
+  const [showcaseSliderPos, setShowcaseSliderPos] = useState(50);
+  const [showcaseView, setShowcaseView] = useState("split"); // "split" | "original" | "removed"
+  const showcaseCompareRef = useRef(null);
+  const isDraggingShowcaseSlider = useRef(false);
+
+  const activeShowcase = SHOWCASE_CATEGORIES.find((c) => c.id === activeShowcaseId) || SHOWCASE_CATEGORIES[0];
+
+  const updateShowcaseSlider = (clientX) => {
+    if (!showcaseCompareRef.current) return;
+    const rect = showcaseCompareRef.current.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const pos = Math.max(0, Math.min(100, (x / rect.width) * 100));
+    setShowcaseSliderPos(pos);
+  };
+
+  const onShowcasePointerDown = (e) => {
+    isDraggingShowcaseSlider.current = true;
+    e.currentTarget.setPointerCapture(e.pointerId);
+    updateShowcaseSlider(e.clientX);
+  };
+
+  const onShowcasePointerMove = (e) => {
+    if (!isDraggingShowcaseSlider.current) return;
+    updateShowcaseSlider(e.clientX);
+  };
+
+  const onShowcasePointerUp = (e) => {
+    isDraggingShowcaseSlider.current = false;
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch (_) {}
+  };
+
+  const testWithSample = async (sample) => {
+    try {
+      setStatus("loading");
+      setProgress(15);
+      setProgressMsg(`Loading ${sample.badge} sample...`);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      const resp = await fetch(sample.image);
+      const blob = await resp.blob();
+      const file = new File([blob], sample.filename, { type: "image/png" });
+      loadFile(file);
+    } catch (e) {
+      console.error("Failed to load sample:", e);
+    }
+  };
 
   // ── Process Background Removal (Reliable Multi-Threaded WASM) ──
   const runRemoval = async (fileToProcess) => {
@@ -270,6 +374,134 @@ export default function App() {
                 ))}
               </div>
             </div>
+
+            {/* ── Running Example Section ("What is Background Remover used for?") ── */}
+            <section className="showcase-section">
+              <div className="showcase-header">
+                <h2>What is Background Remover <span>used for?</span></h2>
+                <p>Drag the interactive slider to see professional edge removal across different industries</p>
+              </div>
+
+              {/* Category Pills (3D theme) */}
+              <div className="showcase-tabs">
+                {SHOWCASE_CATEGORIES.map((cat) => (
+                  <button
+                    key={cat.id}
+                    className={`showcase-tab-btn ${activeShowcaseId === cat.id ? "active" : ""}`}
+                    onClick={() => {
+                      setActiveShowcaseId(cat.id);
+                      setShowcaseSliderPos(50);
+                    }}
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Interactive Showcase Card */}
+              <div className="showcase-card">
+                {/* View toggles in corner */}
+                <div className="showcase-top-controls">
+                  <div className="showcase-badge-pill">
+                    <span className="badge-sparkle">✨</span>
+                    <span>{activeShowcase.badge}</span>
+                  </div>
+                  <div className="showcase-view-toggle">
+                    {[
+                      { id: "split", label: "Split Slider" },
+                      { id: "removed", label: "Transparent BG" },
+                      { id: "original", label: "Original" },
+                    ].map((mode) => (
+                      <button
+                        key={mode.id}
+                        className={`showcase-mode-btn ${showcaseView === mode.id ? "active" : ""}`}
+                        onClick={() => setShowcaseView(mode.id)}
+                      >
+                        {mode.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Interactive Slider Area */}
+                <div
+                  className="showcase-slider-area"
+                  ref={showcaseCompareRef}
+                  onPointerDown={onShowcasePointerDown}
+                  onPointerMove={onShowcasePointerMove}
+                  onPointerUp={onShowcasePointerUp}
+                  onPointerCancel={onShowcasePointerUp}
+                >
+                  {/* Layer 1 (Base): Transparent Checkerboard background */}
+                  <div className="showcase-backdrop checkerboard" />
+
+                  {/* Layer 2: Subject on Transparent Checkerboard */}
+                  <div className="showcase-layer showcase-result-layer">
+                    <img
+                      src={activeShowcase.image}
+                      alt={activeShowcase.label}
+                      draggable={false}
+                    />
+                  </div>
+
+                  {/* Layer 3: Solid Studio Backdrop + Subject (Clipped horizontally) */}
+                  <div
+                    className="showcase-layer showcase-orig-layer"
+                    style={{
+                      backgroundColor: activeShowcase.bgBackdrop,
+                      clipPath: showcaseView === "removed"
+                        ? "inset(0 100% 0 0)"
+                        : showcaseView === "original"
+                        ? "inset(0 0 0 0)"
+                        : `inset(0 ${100 - showcaseSliderPos}% 0 0)`
+                    }}
+                  >
+                    <img
+                      src={activeShowcase.image}
+                      alt={`${activeShowcase.label} Original`}
+                      draggable={false}
+                    />
+                  </div>
+
+                  {/* Divider Line & Interactive Handle (When in split mode) */}
+                  {showcaseView === "split" && (
+                    <div className="showcase-divider" style={{ left: `${showcaseSliderPos}%` }}>
+                      <div className="showcase-handle">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                          <polyline points="15 18 9 12 15 6" />
+                          <polyline points="9 18 3 12 9 6" />
+                        </svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ transform: "rotate(180deg)" }}>
+                          <polyline points="15 18 9 12 15 6" />
+                          <polyline points="9 18 3 12 9 6" />
+                        </svg>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Floating Badges */}
+                  <div className="showcase-badge badge-orig">Original Photo</div>
+                  <div className="showcase-badge badge-cutout">Transparent Cutout</div>
+                </div>
+
+                {/* Bottom Caption & 1-Click Test Action */}
+                <div className="showcase-caption">
+                  <div className="showcase-text">
+                    <h3>{activeShowcase.title}</h3>
+                    <p>{activeShowcase.desc}</p>
+                  </div>
+                  <button
+                    className="btn-try-sample"
+                    onClick={() => testWithSample(activeShowcase)}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                    </svg>
+                    Test with this sample
+                  </button>
+                </div>
+              </div>
+            </section>
 
             <div className="features">
               {[
