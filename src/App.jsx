@@ -114,6 +114,7 @@ export default function App() {
   const [activeLegalModal, setActiveLegalModal] = useState(null);
 
   useEffect(() => {
+    document.title = "Cuto BG Remover — 100% Free AI Background Remover";
     const syncLegalHash = () => {
       const hash = window.location.hash.replace("#", "").toLowerCase();
       if (["terms", "general", "privacy", "cookies", "imprint"].includes(hash)) {
@@ -928,27 +929,38 @@ export default function App() {
             </a>
           </div>
         </div>
+
+        {/* ── Subtle Compact Animated Waves under Navbar (Low Height) ── */}
+        <div className="nav-wave-wrapper">
+          <svg
+            className="nav-waves-svg"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+            viewBox="0 24 150 28"
+            preserveAspectRatio="none"
+            shapeRendering="auto"
+          >
+            <defs>
+              <path
+                id="nav-gentle-wave"
+                d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
+              />
+            </defs>
+            <g className="parallax-waves">
+              {/* Wave 1: Primary Brand Yellow / Carmine Red */}
+              <use xlinkHref="#nav-gentle-wave" x="48" y="0" fill={theme === "dark" ? "#9A0D1B" : "#FFD600"} />
+              {/* Wave 2: Sunset Orange / Rosewood */}
+              <use xlinkHref="#nav-gentle-wave" x="48" y="2" fill={theme === "dark" ? "#6A040F" : "#FF6F00"} />
+              {/* Wave 3: Amber Gold / Cosmos */}
+              <use xlinkHref="#nav-gentle-wave" x="48" y="4" fill={theme === "dark" ? "#550816" : "#FFAB00"} />
+              {/* Wave 4: Deep Base Velvet / Carbon */}
+              <use xlinkHref="#nav-gentle-wave" x="48" y="7" fill={theme === "dark" ? "#1D0515" : "#14171A"} />
+            </g>
+          </svg>
+        </div>
       </header>
 
       <main className="main">
-        {/* ── Top Workspace or Upload State ── */}
-        {/* ── Global Full-Screen Drag & Drop Overlay ── */}
-        {dragging && (
-          <div className="global-drag-overlay" onDrop={onDrop} onDragOver={onDragOver}>
-            <div className="global-drag-modal">
-              <div className="drag-pulse-icon">
-                <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                  <polyline points="17 8 12 3 7 8"/>
-                  <line x1="12" y1="3" x2="12" y2="15"/>
-                </svg>
-              </div>
-              <h2>Drop Image Anywhere!</h2>
-              <p>Release anywhere on the screen to erase background instantly with AI</p>
-            </div>
-          </div>
-        )}
-
         {/* ── Top Workspace or 2-Column Split Hero Layout ── */}
         {!original ? (
           <section className="hero-split-section">

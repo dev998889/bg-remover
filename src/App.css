@@ -156,11 +156,29 @@ body[data-theme="dark"] {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 2.5px solid #FFD600;
+  border-bottom: none;
   box-shadow:
     0 4px 18px -2px rgba(255, 214, 0, 0.18),
     0 1px 0 rgba(255, 171, 0, 0.25);
   transition: all 0.25s ease;
+}
+
+/* ── Subtle Compact Animated Waves under Navbar (Low Height) ── */
+.nav-wave-wrapper {
+  position: relative;
+  width: 100%;
+  height: 14px;
+  overflow: hidden;
+  margin-top: -1px;
+  line-height: 0;
+  display: block;
+}
+
+.nav-waves-svg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
 .header-3d {
@@ -2922,7 +2940,7 @@ body[data-theme="dark"] {
 /* ── Dark Theme Element Overrides (Luxury Carmine & Wine from User Palette) ── */
 [data-theme="dark"] .header-3d-wrapper {
   background: rgba(29, 5, 21, 0.94);
-  border-bottom: 1px solid #550816;
+  border-bottom: none;
   box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.7), 0 1px 0 rgba(85, 8, 22, 0.8);
 }
 
